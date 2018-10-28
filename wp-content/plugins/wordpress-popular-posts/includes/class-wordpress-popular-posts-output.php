@@ -71,10 +71,12 @@ class WPP_Output {
                 $this->options
             );
 
+            $this->output = "\n" . "<!-- WordPress Popular Posts" . ( WP_DEBUG ? ' v' . WPP_VER : '' ) . " -->" . "\n";
+
             // Allow WP themers / coders access to raw data
             // so they can build their own output
             if ( has_filter( 'wpp_custom_html' ) ) {
-                $this->output = apply_filters( 'wpp_custom_html', $this->data, $this->options );
+                $this->output .= apply_filters( 'wpp_custom_html', $this->data, $this->options );
                 return;
             }
 
@@ -568,6 +570,8 @@ class WPP_Output {
                     && !empty( $terms )
                 ) {
 
+                    $taxonomy_separator = apply_filters( 'wpp_taxonomy_separator', ', ' );
+
                     foreach( $terms as $term ) {
 
                         $term_link = get_term_link( $term );
@@ -575,7 +579,7 @@ class WPP_Output {
                         if ( is_wp_error( $term_link ) )
                             continue;
 
-                        $post_tax .= "<a href=\"{$term_link}\" class=\"{$taxonomy} {$taxonomy}-{$term->term_id}\">{$term->name}</a>, ";
+                        $post_tax .= "<a href=\"{$term_link}\" class=\"{$taxonomy} {$taxonomy}-{$term->term_id}\">{$term->name}</a>" . $taxonomy_separator;
 
                     }
 
@@ -584,7 +588,7 @@ class WPP_Output {
             }
 
             if ( '' != $post_tax )
-                $post_tax = rtrim( $post_tax, ", " );
+                $post_tax = rtrim( $post_tax, $taxonomy_separator );
 
         }
 
@@ -632,7 +636,7 @@ class WPP_Output {
 
                 $excerpt = ( empty($the_post->post_excerpt) )
                   ? $the_post->post_content
-                  : $post_object->post_excerpt;
+                  : $the_post->post_excerpt;
             }
             else {
                 $excerpt = ( empty( $post_object->post_excerpt ) )
@@ -693,8 +697,8 @@ class WPP_Output {
 
         $rating = '';
 
-        if ( function_exists('the_ratings') && $this->options['rating'] ) {
-            $rating = the_ratings( 'span', $post_object->id, false );
+        if ( function_exists('the_ratings_results') && $this->options['rating'] ) {
+            $rating = the_ratings_results( $post_object->id );
         }
 
         return $rating;
@@ -893,7 +897,7 @@ class WPP_Output {
             $string = str_replace( "{date}", $data['date'], $string );
         }
 
-        return $string;
+        return apply_filters( "wpp_parse_custom_content_tags", $string, $data['id'] );
 
     }
 

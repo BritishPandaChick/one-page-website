@@ -46,6 +46,11 @@ class WordPressPopularPosts {
     private function load_dependencies(){
 
         /**
+         * Caching class.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordpress-popular-posts-cache.php';
+
+        /**
          * The class responsible for defining internationalization functionality of the plugin.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordpress-popular-posts-i18n.php';
@@ -106,6 +111,13 @@ class WordPressPopularPosts {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordpress-popular-posts-public.php';
 
         /**
+         * The REST API controller class for the popular posts endpoing.
+         */
+        if ( class_exists('WP_REST_Controller', false) ) {
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordpress-popular-posts-rest-controller.php';
+        }
+
+        /**
          * Get loader.
          */
         $this->loader = new WPP_Loader();
@@ -122,21 +134,20 @@ class WordPressPopularPosts {
 
         $plugin_admin = new WPP_Admin( $this->get_plugin_name(), $this->get_version() );
 
-        // Check admin notices
-        $this->loader->add_action( 'admin_notices', $plugin_admin, 'check_admin_notices' );
         // Upgrade check
         $this->loader->add_action( 'init', $plugin_admin, 'upgrade_check' );
         // Hook fired when a new blog is activated on WP Multisite
         $this->loader->add_action( 'wpmu_new_blog', $plugin_admin, 'activate_new_site' );
         // Hook fired when a blog is deleted on WP Multisite
         $this->loader->add_filter( 'wpmu_drop_tables', $plugin_admin, 'delete_site_data', 10, 2 );
+        // At-A-Glance
+        $this->loader->add_filter( 'dashboard_glance_items', $plugin_admin, 'at_a_glance_stats' );
+        $this->loader->add_action( 'admin_head', $plugin_admin, 'at_a_glance_stats_css' );
         // Load WPP's admin styles and scripts
         $this->loader->add_action( 'admin_print_styles', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         // Add admin screen
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
-        // Thickbox setup
-        $this->loader->add_action( 'admin_init', $plugin_admin, 'thickbox_setup' );
         // Contextual help
         $this->loader->add_action( 'admin_head', $plugin_admin, 'add_contextual_help' );
         // Add plugin settings link
@@ -179,6 +190,8 @@ class WordPressPopularPosts {
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
         // Add [wpp] shortcode
         $this->loader->add_shortcode( 'wpp', $plugin_public, 'wpp_shortcode' );
+		// Register the REST route
+        $this->loader->add_action( 'rest_api_init', $plugin_public, 'init_rest_route' );
 
     }
 

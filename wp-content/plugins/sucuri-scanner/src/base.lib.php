@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Code related to the sucuriscan.lib.php interface.
+ * Code related to the base.lib.php interface.
  *
  * PHP version 5
  *
@@ -9,7 +9,7 @@
  * @package    Sucuri
  * @subpackage SucuriScanner
  * @author     Daniel Cid <dcid@sucuri.net>
- * @copyright  2010-2017 Sucuri Inc.
+ * @copyright  2010-2018 Sucuri Inc.
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL2
  * @link       https://wordpress.org/plugins/sucuri-scanner
  */
@@ -33,7 +33,7 @@ if (!defined('SUCURISCAN_INIT') || SUCURISCAN_INIT !== true) {
  * @package    Sucuri
  * @subpackage SucuriScanner
  * @author     Daniel Cid <dcid@sucuri.net>
- * @copyright  2010-2017 Sucuri Inc.
+ * @copyright  2010-2018 Sucuri Inc.
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL2
  * @link       https://wordpress.org/plugins/sucuri-scanner
  */
@@ -259,7 +259,10 @@ class SucuriScan
      */
     public static function fixPath($path = '')
     {
-        return rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $path), '/');
+        $new = str_replace(DIRECTORY_SEPARATOR, '/', $path);
+        $new = rtrim($new, '/'); /* purge right side. */
+
+        return empty($new) ? '/' : $new;
     }
 
     /**
@@ -770,15 +773,15 @@ class SucuriScan
      */
     public static function isValidCIDR($remote_addr = '')
     {
-        $status = false;
-
-        if (preg_match('/^([0-9\.]{7,15})\/(8|16|24)$/', $remote_addr, $match)) {
-            if (self::isValidIP($match[1])) {
-                $status = true;
-            }
+        if (!is_string($remote_addr)) {
+            return false;
         }
 
-        return $status;
+        if (preg_match('/^([0-9\.]{7,15})\/(8|16|24)$/', $remote_addr, $match)) {
+            return self::isValidIP($match[1]);
+        }
+
+        return false;
     }
 
     /**
@@ -905,5 +908,16 @@ class SucuriScan
     public static function isIISServer()
     {
         return (bool) (stripos(@$_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false);
+    }
+
+    /**
+     * Returns the md5 hash representing the content of a file.
+     *
+     * @param  string $file Relative path to the file.
+     * @return string       Seven first characters in the hash of the file.
+     */
+    public static function fileVersion($file = '')
+    {
+        return substr(md5_file(SUCURISCAN_PLUGIN_PATH . '/' . $file), 0, 7);
     }
 }

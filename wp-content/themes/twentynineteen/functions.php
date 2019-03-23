@@ -138,6 +138,10 @@ if ( ! function_exists( 'twentynineteen_setup' ) ) :
 			)
 		);
 
+		$default_hue     = twentynineteen_get_default_hue();
+		$saturation      = apply_filters( 'twentynineteen_custom_colors_saturation', 100 );
+		$lightness       = apply_filters( 'twentynineteen_custom_colors_lightness', 33 );
+		$lightness_hover = apply_filters( 'twentynineteen_custom_colors_lightness_hover', 23 );
 		// Editor color palette.
 		add_theme_support(
 			'editor-color-palette',
@@ -145,12 +149,12 @@ if ( ! function_exists( 'twentynineteen_setup' ) ) :
 				array(
 					'name'  => __( 'Primary', 'twentynineteen' ),
 					'slug'  => 'primary',
-					'color' => twentynineteen_hsl_hex( 'default' === get_theme_mod( 'primary_color' ) ? 199 : get_theme_mod( 'primary_color_hue', 199 ), 100, 33 ),
+					'color' => twentynineteen_hsl_hex( 'default' === get_theme_mod( 'primary_color' ) ? $default_hue : get_theme_mod( 'primary_color_hue', $default_hue ), $saturation, $lightness ),
 				),
 				array(
 					'name'  => __( 'Secondary', 'twentynineteen' ),
 					'slug'  => 'secondary',
-					'color' => twentynineteen_hsl_hex( 'default' === get_theme_mod( 'primary_color' ) ? 199 : get_theme_mod( 'primary_color_hue', 199 ), 100, 23 ),
+					'color' => twentynineteen_hsl_hex( 'default' === get_theme_mod( 'primary_color' ) ? $default_hue : get_theme_mod( 'primary_color_hue', $default_hue ), $saturation, 23 ),
 				),
 				array(
 					'name'  => __( 'Dark Gray', 'twentynineteen' ),
@@ -222,8 +226,8 @@ function twentynineteen_scripts() {
 	wp_style_add_data( 'twentynineteen-style', 'rtl', 'replace' );
 
 	if ( has_nav_menu( 'menu-1' ) ) {
-		wp_enqueue_script( 'twentynineteen-priority-menu', get_theme_file_uri( '/js/priority-menu.js' ), array(), '1.0', true );
-		wp_enqueue_script( 'twentynineteen-touch-navigation', get_theme_file_uri( '/js/touch-keyboard-navigation.js' ), array(), '1.0', true );
+		wp_enqueue_script( 'twentynineteen-priority-menu', get_theme_file_uri( '/js/priority-menu.js' ), array(), '1.1', true );
+		wp_enqueue_script( 'twentynineteen-touch-navigation', get_theme_file_uri( '/js/touch-keyboard-navigation.js' ), array(), '1.1', true );
 	}
 
 	wp_enqueue_style( 'twentynineteen-print-style', get_template_directory_uri() . '/print.css', array(), wp_get_theme()->get( 'Version' ), 'print' );
@@ -257,7 +261,7 @@ add_action( 'wp_print_footer_scripts', 'twentynineteen_skip_link_focus_fix' );
  */
 function twentynineteen_editor_customizer_styles() {
 
-	wp_enqueue_style( 'twentynineteen-editor-customizer-styles', get_theme_file_uri( '/style-editor-customizer.css' ), false, '1.0', 'all' );
+	wp_enqueue_style( 'twentynineteen-editor-customizer-styles', get_theme_file_uri( '/style-editor-customizer.css' ), false, '1.1', 'all' );
 
 	if ( 'custom' === get_theme_mod( 'primary_color' ) ) {
 		// Include color patterns.
@@ -272,16 +276,16 @@ add_action( 'enqueue_block_editor_assets', 'twentynineteen_editor_customizer_sty
  */
 function twentynineteen_colors_css_wrap() {
 
-	// Only include custom colors in customizer or frontend.
-	if ( ( ! is_customize_preview() && 'default' === get_theme_mod( 'primary_color', 'default' ) ) || is_admin() ) {
+	// Only bother if we haven't customized the color.
+	if ( 'default' === get_theme_mod( 'primary_color', 'default' ) && ! twentynineteen_has_custom_default_hue() ) {
 		return;
 	}
 
 	require_once get_parent_theme_file_path( '/inc/color-patterns.php' );
 
-	$primary_color = 199;
+	$primary_color = twentynineteen_get_default_hue();
 	if ( 'default' !== get_theme_mod( 'primary_color', 'default' ) ) {
-		$primary_color = get_theme_mod( 'primary_color_hue', 199 );
+		$primary_color = get_theme_mod( 'primary_color_hue', $primary_color );
 	}
 	?>
 
@@ -291,6 +295,11 @@ function twentynineteen_colors_css_wrap() {
 	<?php
 }
 add_action( 'wp_head', 'twentynineteen_colors_css_wrap' );
+
+/**
+ * Default color filters.
+ */
+require get_template_directory() . '/inc/color-filters.php';
 
 /**
  * SVG Icons class.

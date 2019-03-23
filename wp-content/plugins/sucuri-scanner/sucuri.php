@@ -6,7 +6,9 @@
  * Plugin URI: https://wordpress.sucuri.net/
  * Author URI: https://sucuri.net/
  * Author: Sucuri Inc.
- * Version: 1.8.19
+ * Text Domain: sucuri-scanner
+ * Domain Path: /lang
+ * Version: 1.8.20
  *
  * PHP version 5
  *
@@ -59,7 +61,7 @@ foreach ($sucuriscan_dependencies as $dependency) {
 }
 
 /* check if installation path is available */
-if (!defined('ABSPATH')) {
+if (!defined('ABSPATH') || !defined('WP_CONTENT_DIR')) {
     /* Report invalid access if possible. */
     header('HTTP/1.1 403 Forbidden');
     exit(0);
@@ -83,7 +85,7 @@ define('SUCURISCAN', 'sucuriscan');
 /**
  * Current version of the plugin's code.
  */
-define('SUCURISCAN_VERSION', '1.8.19');
+define('SUCURISCAN_VERSION', '1.8.20');
 
 /**
  * Defines the human readable name of the plugin.
@@ -192,6 +194,12 @@ define('SUCURISCAN_ADMIN_NOTICE_PREFIX', '<b>SUCURI:</b>');
 if (!array_key_exists('SERVER_NAME', $_SERVER)) {
     $_SERVER['SERVER_NAME'] = 'localhost';
 }
+
+/* Load plugin translations */
+function sucuriscan_load_plugin_textdomain() {
+    load_plugin_textdomain( 'sucuri-scanner', false, basename( dirname( __FILE__ ) ) . '/lang/' );
+}
+add_action('plugins_loaded', 'sucuriscan_load_plugin_textdomain');
 
 /* Load all classes before anything else. */
 require_once 'src/base.lib.php';
@@ -305,7 +313,7 @@ function sucuriscanUninstall()
     $directory = SucuriScan::dataStorePath();
     $fifo->removeDirectoryTree($directory);
 
-    SucuriScanEvent::reportDebugEvent('Sucuri plugin has been uninstalled');
+    SucuriScanEvent::reportDebugEvent(__('Sucuri plugin has been uninstalled', 'sucuri-scanner'));
 }
 
 register_deactivation_hook(__FILE__, 'sucuriscanResetAndDeactivate');

@@ -24,3 +24,8 @@ exit(0);
 1546577923_9911:"Critical: BritishPandaChick, 127.0.0.1; WordPress updated to version: 5.0.2"
 1546578027_574:"Warning: BritishPandaChick, 127.0.0.1; Plugins updated: (multiple entries): Akismet Anti-Spam (v4.0.8; akismet\/akismet.php),Sucuri Security - Auditing, Malware Scanner and Hardening (v1.8.18; sucuri-scanner\/sucuri.php),WordPress Popular Posts (v4.2.0; wordpress-popular-posts\/wordpress-popular-posts.php)"
 1546578075_4687:"Warning: BritishPandaChick, 127.0.0.1; Themes updated: (multiple entries): Twenty Fifteen (v2.0; twentyfifteen),Twenty Seventeen (v1.7; twentyseventeen),Twenty Sixteen (v1.5; twentysixteen)"
+1553302565_2791:"Notice: 127.0.0.1; User authentication succeeded: BritishPandaChick"
+1553302699_1776:"Warning: 127.0.0.1; Post deleted: (multiple entries): Post id: 47342,Post author: 2,Post type: post,Post status: auto-draft,Post inserted: 2019-01-04 04:58:34,Post modified: 2019-01-04 04:58:34,Post guid: http:\/\/localhost\/wordpress\/?p=47342,Post title: Auto Draft"
+1553303064_3684:"Warning: BritishPandaChick, 127.0.0.1; Plugins updated: (multiple entries): Akismet Anti-Spam (v4.1; akismet\/akismet.php),Disable Comments (v1.8.0; disable-comments\/disable-comments.php),Sucuri Security - Auditing, Malware Scanner and Hardening (v1.8.19; sucuri-scanner\/sucuri.php)"
+1553303322_4952:"Warning: BritishPandaChick, 127.0.0.1; Themes updated: (multiple entries): Twenty Fifteen (v2.2; twentyfifteen),Twenty Nineteen (v1.1; twentynineteen),Twenty Seventeen (v1.9; twentyseventeen),Twenty Sixteen (v1.7; twentysixteen)"
+1553303745_4517:"Critical: BritishPandaChick, 127.0.0.1; WordPress updated to version: 5.1.1"

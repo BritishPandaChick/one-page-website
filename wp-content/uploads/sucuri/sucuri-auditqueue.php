@@ -49,3 +49,6 @@ exit(0);
 1553304577_9268:"Critical: BritishPandaChick, 127.0.0.1; WordPress updated to version: 5.1.1"
 1553304602_4731:"Notice: 127.0.0.1; User authentication succeeded: BritishPandaChick"
 1553304662_7694:"Critical: BritishPandaChick, 127.0.0.1; WordPress updated to version: 5.1.1"
+1556076796_7958:"Warning: 127.0.0.1; Post deleted: (multiple entries): Post id: 47343,Post author: 2,Post type: post,Post status: auto-draft,Post inserted: 2019-03-23 01:19:04,Post modified: 2019-03-23 01:19:04,Post guid: http:\/\/localhost\/wordpress\/?p=47343,Post title: Auto Draft"
+1556076819_9028:"Notice: 127.0.0.1; User authentication succeeded: BritishPandaChick"
+1556076826_1932:"Notice: BritishPandaChick, 127.0.0.1; Post status has been changed; details: ID: 47344,Old status: new,New status: auto-draft,Title: Auto Draft"

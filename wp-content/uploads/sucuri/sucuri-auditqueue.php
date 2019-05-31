@@ -59,3 +59,8 @@ exit(0);
 1557358906_5903:"Notice: 127.0.0.1; User authentication succeeded: BritishPandaChick"
 1557358946_5004:"Warning: BritishPandaChick, 127.0.0.1; Themes updated: (multiple entries): Twenty Fifteen (v2.4; twentyfifteen),Twenty Nineteen (v1.3; twentynineteen),Twenty Seventeen (v2.1; twentyseventeen),Twenty Sixteen (v1.9; twentysixteen)"
 1557358969_2653:"Critical: BritishPandaChick, 127.0.0.1; WordPress updated to version: 5.2"
+1559334565_6011:"Warning: 127.0.0.1; Post deleted: (multiple entries): Post id: 47345,Post author: 2,Post type: post,Post status: auto-draft,Post inserted: 2019-05-02 23:55:18,Post modified: 2019-05-02 23:55:18,Post guid: http:\/\/localhost\/wordpress\/?p=47345,Post title: Auto Draft"
+1559334565_5487:"Notice: 127.0.0.1; User authentication succeeded: BritishPandaChick"
+1559334570_5014:"Notice: BritishPandaChick, 127.0.0.1; Post status has been changed; details: ID: 47346,Old status: new,New status: auto-draft,Title: Auto Draft"
+1559334577_787:"Warning: BritishPandaChick, 127.0.0.1; Plugins updated: (multiple entries): Akismet Anti-Spam (v4.1.1; akismet\/akismet.php),Hello Dolly (v1.6; hello.php),Sucuri Security - Auditing, Malware Scanner and Hardening (v1.8.20; sucuri-scanner\/sucuri.php)"
+1559334597_6124:"Critical: BritishPandaChick, 127.0.0.1; WordPress updated to version: 5.2.1"

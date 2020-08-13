@@ -70,6 +70,16 @@ if (defined('SUCURISCAN')) {
     }
 
     /**
+     * Add cronjob weekly, monthly and quarterly frequencies.
+     */
+    add_filter('cron_schedules', 'SucuriScanEvent::additionalSchedulesFrequencies');
+
+    /**
+     * Hook the sucuriscan_autoseckeyupdater cron job.
+     */
+    add_action('sucuriscan_autoseckeyupdater', 'SucuriScanCrons::sucuriscan_autoseckeyupdater');
+
+    /**
      * List an associative array with the sub-pages of this plugin.
      *
      * @return array List of sub-pages of this plugin.

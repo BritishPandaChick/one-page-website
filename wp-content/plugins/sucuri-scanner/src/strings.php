@@ -75,7 +75,8 @@ __('Delete', 'sucuri-scanner');
 __('Submit', 'sucuri-scanner');
 __('Loading...', 'sucuri-scanner');
 __('IP Address Access', 'sucuri-scanner');
-__('This tool allows you to whitelist and blacklist one or more IP addresses from accessing your website. You can also configure the plugin to automatically blacklist any IP address involved in a password guessing brute-force attack. If a legitimate user fails to submit the correct credentials of their account they will have to log into the Firewall dashboard in order to delete their IP address from the blacklist, or try to login once again through a VPN.', 'sucuri-scanner');
+__('This tool allows you to blacklist one or more IP addresses from accessing your website.', 'sucuri-scanner');
+__('To delete an IP from the blacklist you can use the form below or you can log into the Firewall dashboard.', 'sucuri-scanner');
 __('Blacklist IP:', 'sucuri-scanner');
 __('e.g. 192.168.1.54', 'sucuri-scanner');
 __('IP Address', 'sucuri-scanner');
@@ -146,7 +147,7 @@ __('Loading...', 'sucuri-scanner');
 __('All Users', 'sucuri-scanner');
 __('Admins', 'sucuri-scanner');
 __('Logged-in Users', 'sucuri-scanner');
-__('Failed logins', 'sucuri-scanner');
+__('Failed Logins', 'sucuri-scanner');
 
 // lastlogins-admins.html.tpl
 __('Successful Logins (admins)', 'sucuri-scanner');
@@ -159,7 +160,7 @@ __('Newest To Oldest', 'sucuri-scanner');
 __('no data available', 'sucuri-scanner');
 __('IP Address', 'sucuri-scanner');
 __('Date/Time', 'sucuri-scanner');
-__('Edit', 'sucuri-scanner');
+__('Edit User Profile', 'sucuri-scanner');
 
 // lastlogins-all.html.tpl
 __('Successful Logins (all)', 'sucuri-scanner');
@@ -169,6 +170,7 @@ __('IP Address', 'sucuri-scanner');
 __('Hostname', 'sucuri-scanner');
 __('Date/Time', 'sucuri-scanner');
 __('no data available', 'sucuri-scanner');
+__('Delete All Successful Logins', 'sucuri-scanner');
 
 // lastlogins-all.snippet.tpl
 __('Edit', 'sucuri-scanner');
@@ -182,6 +184,7 @@ __('Date/Time', 'sucuri-scanner');
 __('Web Browser', 'sucuri-scanner');
 __('no data available', 'sucuri-scanner');
 __('Block', 'sucuri-scanner');
+__('Delete All Failed Logins', 'sucuri-scanner');
 
 // lastlogins-loggedin.html.tpl
 __('Logged-in Users}', 'sucuri-scanner');
@@ -193,7 +196,7 @@ __('Registered', 'sucuri-scanner');
 __('IP Address', 'sucuri-scanner');
 
 // lastlogins-loggedin.snippet.tpl
-__('Edit', 'sucuri-scanner');
+__('Edit User Profile', 'sucuri-scanner');
 __('Website:', 'sucuri-scanner');
 __('IP Address:', 'sucuri-scanner');
 __('Reverse IP:', 'sucuri-scanner');
@@ -435,6 +438,10 @@ __('Name', 'sucuri-scanner');
 __('Value', 'sucuri-scanner');
 __('I understand that this operation cannot be reverted.', 'sucuri-scanner');
 __('Generate New Security Keys', 'sucuri-scanner');
+__('Automatic Secret Keys Updater', 'sucuri-scanner');
+__('Changing the Secret Keys frequently will decrease the chances of misuse of sessions left open on unprotected devices.', 'sucuri-scanner');
+__('Frequency:', 'sucuri-scanner');
+__('Submit', 'sucuri-scanner');
 
 // settings-scanner-cronjobs.html.tpl
 __('Scheduled Tasks', 'sucuri-scanner');
@@ -484,6 +491,7 @@ __('Access File Integrity', 'sucuri-scanner');
 __('The <code>.htaccess</code> file is a distributed configuration file, and is how the Apache web server handles configuration changes on a per-directory basis. WordPress uses this file to manipulate how Apache serves files from its root directory and subdirectories thereof; most notably, it modifies this file to be able to handle pretty permalinks.', 'sucuri-scanner');
 __('Htaccess file found in', 'sucuri-scanner');
 __('Your website has no <code>.htaccess</code> file or it was not found in the default location.', 'sucuri-scanner');
+__('Your web server does not support .htaccess files.', 'sucuri-scanner');
 __('The main <code>.htaccess</code> file in your site has the standard rules for a WordPress installation. You can customize it to improve the performance and change the behaviour of the redirections for pages and posts in your site. To get more information visit the official documentation at <a target="_blank" rel="noopener" href="https://codex.wordpress.org/Using_Permalinks#Creating_and_editing_.28.htaccess.29"> Codex WordPress - Creating and editing (.htaccess)</a>', 'sucuri-scanner');
 __('Codex WordPress HTAccess', 'sucuri-scanner');
 

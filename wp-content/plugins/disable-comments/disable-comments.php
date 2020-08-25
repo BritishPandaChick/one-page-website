@@ -2,11 +2,12 @@
 /**
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
- * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
- * Version: 1.10.3
- * Author: Samir Shah
- * Author URI: http://www.rayofsolaris.net/
- * License: GPL2
+ * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
+ * Version: 1.11.0
+ * Author: WPDeveloper
+ * Author URI: https://wpdeveloper.net
+ * License: GPL-3.0+
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: disable-comments
  * Domain Path: /languages/
  *
@@ -401,7 +402,7 @@ class Disable_Comments {
 		static $plugin;
 		$plugin = plugin_basename( __FILE__ );
 		if ( $file == $plugin ) {
-			$links[] = '<a href="https://github.com/solarissmoke/disable-comments">GitHub</a>';
+			$links[] = '<a href="https://github.com/WPDevelopers/disable-comments">GitHub</a>';
 		}
 		return $links;
 	}

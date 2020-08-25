@@ -3,9 +3,9 @@ Contributors: hcabrera
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hcabrerab%40gmail%2ecom&lc=GB&item_name=WordPress%20Popular%20Posts%20Plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG_global%2egif%3aNonHosted
 Tags: popular, posts, widget, popularity, top
 Requires at least: 4.9
-Tested up to: 5.4.2
+Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 5.2.2
+Stable tag: 5.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,15 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 4. Statistics panel.
 
 == Changelog ==
+= 5.2.3 =
+
+**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**
+
+- Fixes a compatibility issue with WordPress 5.5.
+- Widget themes: various fixes for better IE11 compatibility.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-2-is-here#hotfixes-and-minor-updates)
+
 = 5.2.2 =
 
 **If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**

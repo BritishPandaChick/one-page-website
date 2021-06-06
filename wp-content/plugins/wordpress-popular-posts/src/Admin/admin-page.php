@@ -21,7 +21,7 @@ if ( isset($_POST['section']) ) {
     if ( "stats" == $_POST['section'] ) {
         $current = 'stats';
 
-        if ( isset($_POST['wpp-admin-token']) && wp_verify_nonce($_POST['wpp-admin-token'], 'wpp-update-stats-options') ) {
+        if ( isset($_POST['wpp-update-stats-options-token']) && wp_verify_nonce($_POST['wpp-update-stats-options-token'], 'wpp-update-stats-options') ) {
             $this->config['stats']['limit'] = ( \WordPressPopularPosts\Helper::is_number($_POST['stats_limit']) && $_POST['stats_limit'] > 0 ) ? $_POST['stats_limit'] : 10;
             $this->config['stats']['post_type'] = empty($_POST['stats_type']) ? "post,page" : $_POST['stats_type'];
             $this->config['stats']['freshness'] = empty($_POST['stats_freshness']) ? false : $_POST['stats_freshness'];
@@ -33,7 +33,7 @@ if ( isset($_POST['section']) ) {
     elseif ( "misc" == $_POST['section'] ) {
         $current = 'tools';
 
-        if ( isset($_POST['wpp-admin-token'] ) && wp_verify_nonce($_POST['wpp-admin-token'], 'wpp-update-misc-options') ) {
+        if ( isset($_POST['wpp-update-misc-options-token'] ) && wp_verify_nonce($_POST['wpp-update-misc-options-token'], 'wpp-update-misc-options') ) {
             $this->config['tools']['link']['target'] = $_POST['link_target'];
             $this->config['tools']['css'] = $_POST['css'];
 
@@ -44,7 +44,7 @@ if ( isset($_POST['section']) ) {
     elseif ( "thumb" == $_POST['section'] ) {
         $current = 'tools';
 
-        if ( isset($_POST['wpp-admin-token']) && wp_verify_nonce($_POST['wpp-admin-token'], 'wpp-update-thumbnail-options') ) {
+        if ( isset($_POST['wpp-update-thumbnail-options-token']) && wp_verify_nonce($_POST['wpp-update-thumbnail-options-token'], 'wpp-update-thumbnail-options') ) {
             if (
                 $_POST['thumb_source'] == "custom_field"
                 && ( ! isset($_POST['thumb_field']) || empty($_POST['thumb_field']) )
@@ -71,7 +71,7 @@ if ( isset($_POST['section']) ) {
     elseif ( "data" == $_POST['section'] && current_user_can('manage_options') ) {
         $current = 'tools';
 
-        if ( isset($_POST['wpp-admin-token'] ) && wp_verify_nonce($_POST['wpp-admin-token'], 'wpp-update-data-options') ) {
+        if ( isset($_POST['wpp-update-data-options-token'] ) && wp_verify_nonce($_POST['wpp-update-data-options-token'], 'wpp-update-data-options') ) {
             $this->config['tools']['log']['level'] = $_POST['log_option'];
             $this->config['tools']['log']['limit'] = $_POST['log_limit'];
             $this->config['tools']['log']['expires_after'] = ( \WordPressPopularPosts\Helper::is_number($_POST['log_expire_time']) && $_POST['log_expire_time'] > 0 )
@@ -278,7 +278,7 @@ if ( ! $wpp_rand = get_option("wpp_rand") ) {
             <button type="submit" class="button-primary action"><?php _e("Apply", 'wordpress-popular-posts'); ?></button>
             <button class="button-secondary action right"><?php _e("Cancel"); ?></button>
 
-            <?php wp_nonce_field('wpp-update-stats-options', 'wpp-admin-token'); ?>
+            <?php wp_nonce_field('wpp-update-stats-options', 'wpp-update-stats-options-token'); ?>
         </form>
     </div>
 
@@ -395,8 +395,23 @@ if ( ! $wpp_rand = get_option("wpp_rand") ) {
                     <tr valign="top">
                         <th scope="row"><label for="thumb_default"><?php _e("Default thumbnail", 'wordpress-popular-posts'); ?>:</label></th>
                         <td>
+                            <?php
+                            $fallback_thumbnail_url = trim($this->config['tools']['thumbnail']['default']);
+
+                            if ( ! $fallback_thumbnail_url )
+                                $fallback_thumbnail_url = $this->thumbnail->get_default_url();
+
+                            $fallback_thumbnail_url = str_replace(
+                                parse_url(
+                                    $fallback_thumbnail_url
+                                    , PHP_URL_SCHEME
+                                ) . ':',
+                                '',
+                                $fallback_thumbnail_url
+                            );
+                            ?>
                             <div id="thumb-review">
-                                <img src="<?php echo ($this->config['tools']['thumbnail']['default'] ) ? str_replace(parse_url($this->config['tools']['thumbnail']['default'], PHP_URL_SCHEME) . ':', '', $this->config['tools']['thumbnail']['default']) : plugins_url() . '/wordpress-popular-posts/assets/images/no_thumb.jpg'; ?>" alt="" />
+                                <img src="<?php echo esc_url($fallback_thumbnail_url); ?>" alt="" />
                             </div>
 
                             <input id="upload_thumb_button" type="button" class="button" value="<?php _e("Change thumbnail", 'wordpress-popular-posts'); ?>">
@@ -465,7 +480,7 @@ if ( ! $wpp_rand = get_option("wpp_rand") ) {
                 </tbody>
             </table>
 
-            <?php wp_nonce_field('wpp-update-thumbnail-options', 'wpp-admin-token'); ?>
+            <?php wp_nonce_field('wpp-update-thumbnail-options', 'wpp-update-thumbnail-options-token'); ?>
         </form>
         <br />
         <p style="display: <?php echo ( current_user_can('manage_options') ) ? 'block' : 'none'; ?>; float:none; clear:both;">&nbsp;</p>
@@ -572,7 +587,7 @@ if ( ! $wpp_rand = get_option("wpp_rand") ) {
                 </tbody>
             </table>
 
-            <?php wp_nonce_field('wpp-update-data-options', 'wpp-admin-token'); ?>
+            <?php wp_nonce_field('wpp-update-data-options', 'wpp-update-data-options-token'); ?>
         </form>
         <br />
         <p style="display: block; float:none; clear: both;">&nbsp;</p>
@@ -612,7 +627,7 @@ if ( ! $wpp_rand = get_option("wpp_rand") ) {
                 </tbody>
             </table>
 
-            <?php wp_nonce_field('wpp-update-misc-options', 'wpp-admin-token'); ?>
+            <?php wp_nonce_field('wpp-update-misc-options', 'wpp-update-misc-options-token'); ?>
         </form>
         <br />
         <p style="display: block; float: none; clear: both;">&nbsp;</p>

@@ -3,9 +3,9 @@ Contributors: hcabrera
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hcabrerab%40gmail%2ecom&lc=GB&item_name=WordPress%20Popular%20Posts%20Plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG_global%2egif%3aNonHosted
 Tags: popular, posts, widget, popularity, top
 Requires at least: 4.9
-Tested up to: 5.7.1
+Tested up to: 5.7.2
 Requires PHP: 5.4
-Stable tag: 5.3.2
+Stable tag: 5.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,7 +40,7 @@ WordPress Popular Posts is a highly customizable widget that displays your most 
 
 If you'd like to support my work and efforts to creating and maintaining more open source projects your donations and messages of support mean a lot!
 
-[Buy me a coffee](https://ko-fi.com/cabrerahector) | [PayPal Me](https://paypal.me/cabrerahector)
+[Ko-fi](https://ko-fi.com/cabrerahector) | [Buy me a coffee](https://www.buymeacoffee.com/cabrerahector) | [PayPal Me](https://paypal.me/cabrerahector)
 
 **WordPress Popular Posts** is now also on [GitHub](https://github.com/cabrerahector/wordpress-popular-posts)!
 
@@ -97,6 +97,18 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 
 == Changelog ==
 
+= 5.3.3 =
+
+- Fixes a potential XSS vulnerability (props to Yu Iwama of Secure Sky Technology Inc. and the JPCERT/CC Vulnerability Coordination Group).
+- Fixes a potential code injection vulnerability (props to Jerome & NinTechNet).
+- Fixes a srcset bug that affects specific PHP locales (props to @fredel).
+- Fixes a srcset not loading images due to improper SSL/HTTPS configuration (props to @aj4h).
+- Updates ChartJS to version 2.9.4.
+
+If you're using a caching plugin flushing its cache after upgrading to this version is highly recommended.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-3-improved-php-8-support-retina-display-support-and-more/#minor-updates-and-hotfixes)
+
 = 5.3.2 =
 
 - `wpp_get_views()`: fixed an issue where the function would return 0 views under certain conditions (thanks to everyone who helped with this!)
@@ -125,103 +137,12 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 
 [Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-3-improved-php-8-support-retina-display-support-and-more/)
 
-= 5.2.4 =
-
-- Fixes PHP notices affecting Block Editor users on WordPress 5.5.
-- Fixes a rare PHP warning message that pops up randomly when the Pageviews Cache is enabled.
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-2-is-here#hotfixes-and-minor-updates)
-
-= 5.2.3 =
-
-**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**
-
-- Fixes a compatibility issue with WordPress 5.5.
-- Widget themes: various fixes for better IE11 compatibility.
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-2-is-here#hotfixes-and-minor-updates)
-
-= 5.2.2 =
-
-**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**
-
-- Fixes compatibility issue with plugins that minify HTML code.
-- Updates installation instructions.
-- Other minor improvements.
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-2-is-here#hotfixes-and-minor-updates)
-
-= 5.2.1 =
-
-**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**
-
-- Fixes fatal PHP error triggered on some server setups.
-- Makes sure non-ajaxified themed widgets are properly moved into the ShadowRoot.
-- Fixes declaration of the wpp_params variable.
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-2-is-here#hotfixes-and-minor-updates)
-
-= 5.2.0 =
-
-**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**
-
-- JavaScript based Lazy Loading superseded by Native Lazing Loading.
-- Improved Pageviews Cache.
-- Views/comments count will be prettified now!
-- Fixed a few layout issues found in widget themes.
-- Improved compatibility with Content Security Policy (CSP).
-- Added support for ACF images.
-- Other minor improvements and fixes.
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-2-is-here)
-
-= 5.1.0 =
-
-- The /popular-posts GET API endpoint is now being cached as well.
-- Added a new Content Tag: title_attr.
-- Added a new [filter hook to filter popular posts terms](https://github.com/cabrerahector/wordpress-popular-posts/wiki/3.-Filters#wpp_post_terms).
-- Minor code improvements.
-
-= 5.0.2 =
-
-- A performance notice will be displayed for mid/high traffic sites (see [#239](https://github.com/cabrerahector/wordpress-popular-posts/issues/239)).
-- Fixed an issue with text_title content tag not being shortened (see [#241](https://github.com/cabrerahector/wordpress-popular-posts/issues/241)).
-- Added a link to the Debug screen to the plugin's dashboard for ease of access.
-- Other minor improvements/changes.
-
-= 5.0.1 =
-
-**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is recommended.**
-
-- Fixed a compatibility issue with the newly introduced [widget themes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-0-multiple-taxonomy-support-themes-thumbnail-lazy-loading-and-more/#themes) feature. If you're using a theme with your popular posts widget you'll need to reapply it for it to get the latest changes (go to Appearance > Widgets > WordPress Popular Posts, select a different theme then hit Save, finally switch back to your preferred theme and hit Save again.)
-- Fixed two date related issues.
-- Minor styling improvements to widget themes Cards, Cards Compact, Cardview and Cardview Compact.
-- Removes bold styling from post title on the stock design (wpp.css).
-- Improves data caching logic.
-
-= 5.0.0 =
-
-**If you're using a caching plugin, flushing its cache right after installing / upgrading to this version is required.**
-
-- Code has been refactored to use more modern PHP practices! This will help make WordPress Popular Posts more maintainable and easier to extend.
-- WordPress Popular Posts now requires PHP 5.4 or newer and WordPress 4.7 or newer.
-- The `WPP_Query` class has been deprecated. Use `WordPressPopularPosts\Query` instead.
-- Added ability to filter posts by multiple taxonomies (thanks [blackWhitePanda](https://github.com/blackWhitePanda)!)
-- New Dashboard Widget: Trending Now.
-- Added 10 new themes for the widget!
-- Added ability to lazy load thumbnails (enabled by default).
-- Improved support for WPML and Polylang.
-- Authors and Editors can now access the Stats dashboard too!
-- Fixed translation issues affecting russian and similar languages.
-- New Content Tags: total_items and item_position.
-- Many minor bug fixes/improvements.
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-0-multiple-taxonomy-support-themes-thumbnail-lazy-loading-and-more/) | [Full Changelog](https://github.com/cabrerahector/wordpress-popular-posts/compare/4.2.2...5.0.0).
+[Full Changelog](https://github.com/cabrerahector/wordpress-popular-posts/blob/master/changelog.md)
 
 == Credits ==
 
 * Flame graphic by freevector/Vecteezy.com.
 
 == Upgrade Notice ==
-= 5.3.1 =
-If you're using a caching plugin, flushing its cache after upgrading to this version is recommended.
+= 5.3.3 =
+If you're using a caching plugin flushing its cache after upgrading to this version is highly recommended.

@@ -81,7 +81,7 @@ class Image {
         }
 
         // Set descriptors
-        $this->descriptors = [1.5, 2, 2.5, 3];
+        $this->descriptors = ['1.5', '2', '2.5', '3'];
     }
 
     /**
@@ -624,6 +624,9 @@ class Image {
      */
     private function fetch_external_image($id, $url)
     {
+        if ( ! $this->is_image_url($url) )
+            return false;
+
         $full_image_path = trailingslashit($this->get_plugin_uploads_dir()['basedir']) . "{$id}_" . sanitize_file_name(rawurldecode(wp_basename($url)));
 
         // if the file exists already, return URL and path
@@ -710,8 +713,8 @@ class Image {
             if ( $retina_support ) {
                 // Calculate thumbnail sizes
                 foreach( $this->descriptors as $descriptor ) {
-                    $new_size_width = $descriptor * $size[0];
-                    $new_size_height = $descriptor * $size[1];
+                    $new_size_width = floor($descriptor * $size[0]);
+                    $new_size_height = floor($descriptor * $size[1]);
 
                     if (
                         $new_size_width <= $original_size['width']
@@ -838,8 +841,14 @@ class Image {
             $img_tag = '<!-- ' . $error . ' --> ';
         }
 
+        // Make sure we use the right protocol
+        $src = esc_url(is_ssl() ? str_ireplace("http://", "https://", $src) : $src);
+        // Get srcset, if available
         $srcset = $this->get_srcset($src);
-        $src = 'src="' . esc_url(is_ssl() ? str_ireplace("http://", "https://", $src) : $src) . '"' . $srcset;
+
+        $src = 'src="' . $src. '"' . $srcset;
+
+        // Lazy Load attribute, if enabled
         $lazyload = ( $this->admin_options['tools']['thumbnail']['lazyload'] ) ? ' loading="lazy"' : '';
 
         $img_tag .= '<img ' . $src . ' width="' . $size[0] . '" height="' . $size[1] . '" alt="' . esc_attr($alt) . '" class="' . esc_attr($class) . '"' . $lazyload . ' />';
@@ -924,6 +933,15 @@ class Image {
         $parse_url = str_replace($path, implode('/', $encoded_path), $url);
 
         if ( ! filter_var($parse_url, FILTER_VALIDATE_URL) )
+            return false;
+
+        // Check extension
+        $file_name = basename($path);
+        $file_name = sanitize_file_name($file_name);
+        $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if ( ! in_array($ext, $allowed_ext) )
             return false;
 
         // sanitize URL, just in case

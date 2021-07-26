@@ -95,6 +95,8 @@ class Widget extends \WP_Widget {
     {
         // Register the widget
         add_action('widgets_init', [$this, 'register']);
+        // Remove widget from Legacy Widget block
+        add_filter('widget_types_to_hide_from_legacy_widget_block', [$this, 'remove_from_legacy_widget_block']);
     }
 
     /**
@@ -135,10 +137,6 @@ class Widget extends \WP_Widget {
             (array) $instance
         );
 
-        $markup = ( $instance['markup']['custom_html'] || has_filter('wpp_custom_html') || has_filter('wpp_post') )
-              ? 'custom'
-              : 'regular';
-
         echo "\n" . $before_widget . "\n";
 
         // Has user set a title?
@@ -156,8 +154,9 @@ class Widget extends \WP_Widget {
             }
         }
 
-        // Expose Widget ID for customization
+        // Expose Widget ID & base for customization
         $instance['widget_id'] = $widget_id;
+        $instance['id_base'] = $this->id_base;
 
         // Get posts
         if ( $this->admin_options['tools']['ajax'] && ! is_customize_preview() ) {
@@ -390,6 +389,7 @@ class Widget extends \WP_Widget {
     public function get_popular($instance = null)
     {
         if ( is_array($instance) && ! empty($instance) ) {
+
             // Return cached results
             if ( $this->admin_options['tools']['cache']['active'] ) {
 
@@ -446,5 +446,17 @@ class Widget extends \WP_Widget {
         }
 
         return null;
+    }
+
+    /**
+     * Removes the standard widget from the Legacy Widget block.
+     *
+     * @param   array
+     * @return  array
+     */
+    public function remove_from_legacy_widget_block($widget_types)
+    {
+        $widget_types[] = 'wpp';
+        return $widget_types;
     }
 }

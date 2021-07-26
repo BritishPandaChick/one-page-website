@@ -334,4 +334,41 @@ class Helper {
         // Invalid/malformed URL
         return false;
     }
+
+    /**
+     * Checks whether an URL points to an actual image.
+     *
+     * This function used to live in src/Image, moved it here
+     * on version 5.4.0 to use it where needed.
+     *
+     * @since   5.0.0
+     * @access  private
+     * @param   string
+     * @return  array|bool
+     */
+    static function is_image_url($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        $encoded_path = array_map('urlencode', explode('/', $path));
+        $parse_url = str_replace($path, implode('/', $encoded_path), $url);
+
+        if ( ! filter_var($parse_url, FILTER_VALIDATE_URL) )
+            return false;
+
+        // Check extension
+        $file_name = basename($path);
+        $file_name = sanitize_file_name($file_name);
+        $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if ( ! in_array($ext, $allowed_ext) )
+            return false;
+
+        // sanitize URL, just in case
+        $image_url = esc_url($url);
+        // remove querystring
+        preg_match('/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG)/', $image_url, $matches);
+
+        return ( is_array($matches) && ! empty($matches) ) ? $matches : false;
+    }
 }

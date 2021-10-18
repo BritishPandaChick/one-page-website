@@ -94,10 +94,6 @@ class Output {
         $this->themer = $themer;
 
         $this->more = '...';
-
-        // Allow customization of the more (...) string
-        if ( has_filter('wpp_excerpt_more') )
-            $this->more = apply_filters('wpp_excerpt_more', $this->more);
     }
 
     /**
@@ -287,7 +283,9 @@ class Output {
               ? $this->public_options['shorten_title']['length']
               : 25;
 
-            $post_title = Helper::truncate($post_title, $length, $this->public_options['shorten_title']['words'], $this->more);
+            $more = $this->public_options['shorten_title']['words'] ? ' ' . $this->more : $this->more;
+            $more = apply_filters('wpp_title_more', $more);
+            $post_title = Helper::truncate($post_title, $length, $this->public_options['shorten_title']['words'], $more);
         }
 
         // Thumbnail
@@ -355,6 +353,7 @@ class Output {
         if ( $this->public_options['markup']['custom_html'] ) {
             $data = [
                 'id' => $post_id,
+                'is_current_post' => $is_current_post,
                 'title' => '<a href="' . $permalink . '" ' . ($post_title_attr !== $post_title ? 'title="' . $post_title_attr . '" ' : '' ) . 'class="wpp-post-title" target="' . $this->admin_options['tools']['link']['target'] . '">' . $post_title . '</a>',
                 'title_attr' => $post_title_attr,
                 'summary' => $post_excerpt,
@@ -540,12 +539,16 @@ class Output {
                 $excerpt = preg_replace('_^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,})))(?::\d{2,5})?(?:/[^\s]*)?$_iuS', '', $excerpt);
             }
 
+            $excerpt = trim($excerpt);
+
         }
 
         // Balance tags, if needed
         if ( '' !== $excerpt ) {
 
-            $excerpt = Helper::truncate($excerpt, $this->public_options['post-excerpt']['length'], $this->public_options['post-excerpt']['words'], $this->more);
+            $more = $this->public_options['post-excerpt']['words'] ? ' ' . $this->more : $this->more;
+            $more = apply_filters('wpp_excerpt_more', $more);
+            $excerpt = Helper::truncate($excerpt, $this->public_options['post-excerpt']['length'], $this->public_options['post-excerpt']['words'], $more);
 
             if ( $this->public_options['post-excerpt']['keep_format'] )
                 $excerpt = force_balance_tags($excerpt);
@@ -800,13 +803,17 @@ class Output {
             return false;
 
         $params = [];
-        $pattern = '/\{(pid|excerpt|summary|meta|stats|title|title_attr|image|thumb|thumb_img|thumb_url|rating|score|url|text_title|author|author_copy|taxonomy|taxonomy_copy|category|category_copy|views|views_copy|comments|comments_copy|date|date_copy|total_items|item_position)\}/i';
+        $pattern = '/\{(pid|current_class|excerpt|summary|meta|stats|title|title_attr|image|thumb|thumb_img|thumb_url|rating|score|url|text_title|author|author_copy|taxonomy|taxonomy_copy|category|category_copy|views|views_copy|comments|comments_copy|date|date_copy|total_items|item_position)\}/i';
         preg_match_all($pattern, $string, $matches);
 
         array_map('strtolower', $matches[0]);
 
         if ( in_array("{pid}", $matches[0]) ) {
             $string = str_replace("{pid}", $data['id'], $string);
+        }
+
+        if ( in_array("{current_class}", $matches[0]) ) {
+            $string = str_replace("{current_class}", ( $data['is_current_post'] ? 'current' : '' ), $string);
         }
 
         if ( in_array("{title}", $matches[0]) ) {

@@ -5,7 +5,7 @@ Tags: popular, posts, widget, popularity, top
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 5.4.2
+Stable tag: 5.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,16 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 4. Statistics panel.
 
 == Changelog ==
+
+= 5.5.0 =
+
+- Adds the Sort by Average Daily Views option from the classic widget to the WordPress Popular Posts block.
+- Adds the WordPress Date Format option from the classic widget to the WordPress Popular Posts block (please see announcements for details).
+- Adds new Content Tags: author_name and author_url.
+- Improves cached data garbage collection.
+- Other minor performances improvements and fixes.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-5-qol-improvements-and-php-5-announcement/)
 
 = 5.4.2 =
 

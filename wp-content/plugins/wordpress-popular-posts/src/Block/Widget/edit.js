@@ -187,6 +187,7 @@ export class WPPWidgetBlockEdit extends Component
                 value={attributes.order_by}
                 options={[
                     {label: __('Total views', 'wordpress-popular-posts'), value: 'views'},
+                    {label: __('Avg. daily views', 'wordpress-popular-posts'), value: 'avg'},
                     {label: __('Comments', 'wordpress-popular-posts'), value: 'comments'}
                 ]}
                 onChange={onOrderByChange}
@@ -584,6 +585,7 @@ export class WPPWidgetBlockEdit extends Component
                             { label: __('yyyy/mm/dd', 'wordpress-popular-posts'), value: 'Y/m/d' },
                             { label: __('mm/dd/yyyy', 'wordpress-popular-posts'), value: 'm/d/Y' },
                             { label: __('dd/mm/yyyy', 'wordpress-popular-posts'), value: 'd/m/Y' },
+                            { label: __('WordPress Date Format', 'wordpress-popular-posts'), value: 'wp_date_format' },
                         ]}
                         onChange={(value) => setAttributes({ stats_date_format: value })}
                     />

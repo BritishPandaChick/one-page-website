@@ -6,29 +6,12 @@
 
         <div class="disable__comment__option mb50">
             <?php if(is_network_admin()):?>
-                <div class="disable_option sites_option dc-text__block mb30 mt30">
+            <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30" data-type="delete">
                 <h3>Delete comments in the following sites:</h3>
-                <div class="disabled__sites delete__checklist">
                 <?php
-                echo "
-                <div class='delete__checklist__item'>
-                    <input type='checkbox' class='check-all' id='delete__checklist__check__all' data-list='delete__checklist__item' checked >
-                    <label for='delete__checklist__check__all'><b>Select All</b> <small>(0 selected)</small></label>
-                </div><br />";
-                $sub_sites = get_sites([
-					'number' => 0,
-				]);
-                foreach ( $sub_sites as $sub_site ) {
-                    $sub_site_id = $sub_site->blog_id;
-                    $blog = get_blog_details($sub_site_id);
-                    echo
-                    "<div class='delete__checklist__item'>
-                        <input type='checkbox' id='delete__checklist__item-$sub_site_id' class='site_option' name='disabled_sites[]' value='$sub_site_id' checked='checked'>
-                        <label for='delete__checklist__item-$sub_site_id'>{$blog->blogname}</label>
-                    </div>";
-                }
+                    $type = 'delete';
+                    include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
                 ?>
-                </div>
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Select your sub-sites where you want to delete comments.', 'disable-comments'); ?></p>
             </div>
 
@@ -74,6 +57,11 @@
                     ?>
                 </ul>
                 <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('Deleting comments by comment type will remove existing comment entries of the selected comment type(s) in the database and cannot be reverted without a database backup.', 'disable-comments'); ?></p>
+            </div>
+            <div class="disable_option dc-text__block mb30 mt30">
+                <input type="radio" id="delete_spam" name="delete_mode" value="delete_spam" />
+                <label for="delete_spam"><?php _e('Spam:', 'disable-comments'); ?> <span><?php _e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?></span></label>
+                <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('This will permanently delete spam comments everywhere on your website.', 'disable-comments'); ?></p>
             </div>
             <h4 class="total-comments"><?php _e('Total Comments:', 'disable-comments'); ?> <?php echo $this->get_all_comments_number(); ?></h4>
         </div>

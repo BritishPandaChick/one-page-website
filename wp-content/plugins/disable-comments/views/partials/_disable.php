@@ -19,33 +19,13 @@
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable Site Wise settings, you need to configure your “Disable Comments” settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
-        <div class="disable_option sites_option dc-text__block mb30 mt30">
+        <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30" data-type="disabled">
             <h3>Disable comments in the following sites:</h3>
-            <div class="disabled__sites remove__checklist">
             <?php
-            $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
-            $sub_sites = get_sites([
-                'number' => 0,
-            ]);
-            echo "
-            <div class='remove__checklist__item'>
-                <input type='checkbox' class='check-all' id='disabled__sites__check__all' data-list='remove__checklist__item' name='disabled_sites[]' value='all' " .
-                checked(!empty($disabled_site_options['all']), true, false) . ">
-                <label for='disabled__sites__check__all'><b>Select All</b> <small>(0 selected)</small></label>
-            </div>";
-
-            foreach ( $sub_sites as $sub_site ) {
-                $sub_site_id = $sub_site->blog_id;
-                $blog = get_blog_details($sub_site_id);
-                echo
-                "<div class='remove__checklist__item'>
-                    <input type='checkbox' id='remove__checklist__item-$sub_site_id' class='site_option' name='disabled_sites[]' value='site_$sub_site_id'" . checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false) . ">
-                    <label for='remove__checklist__item-$sub_site_id'>{$blog->blogname}</label>
-                </div>";
-            }
+                $type = 'disabled';
+                include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
             ?>
-            </div>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise settings if you want to configure “Disable Comments” settings individually on every website.', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the underneath settings (except Avatar settings) will be applied for these selected sub sites.', 'disable-comments'); ?></p>
         </div>
         <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
             <div class="disable_option dc-text__block mb30 mt30">
@@ -83,6 +63,49 @@
             </div>
             <p class="subtitle"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts. Comments will be visible on all other post types.', 'disable-comments'); ?></p>
         </div>
+        <?php if(!is_network_admin()):?>
+        <div class="disable_option dc-text__block mt30">
+            <div class="disable__switchs">
+                <div class="dissable__switch__item">
+                    <input type="hidden" name="disable_avatar" value="0">
+                    <input type="checkbox" id="disable_avatar" name="disable_avatar" value="1" <?php checked(!get_option('show_avatars', false)); ?>>
+                    <label for="disable_avatar">
+                        <span class="switch">
+                            <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                            <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+                        </span><?php _e('Disable Avatar', 'disable-comments'); ?>
+                    </label>
+                </div>
+            </div>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire site.', 'disable-comments'); ?></p>
+        </div>
+        <?php else:?>
+        <div class="disable_option dc-text__block mt30">
+            <h3><?php _e("Avatar settings:", 'disable-comments');?></h3>
+            <div class="disable__switch">
+                <div class="avatar__status">
+                    <input type="radio" id="dont_change" name="disable_avatar" value="-1" <?php checked($avatar_status, -1); ?>>
+                    <label for="dont_change">
+                        <?php _e('Don\'t Change', 'disable-comments'); ?>
+                    </label>
+                </div>
+                <div class="avatar__status">
+                    <input type="radio" id="enable_avatar" name="disable_avatar" value="0" <?php checked($avatar_status, 0); ?>>
+                    <label for="enable_avatar">
+                        <?php _e('Enable Avatar', 'disable-comments'); ?>
+                    </label>
+                </div>
+                <div class="avatar__status">
+                    <input type="radio" id="disable_avatar" name="disable_avatar" value="1" <?php checked($avatar_status, 1); ?>>
+                    <label for="disable_avatar">
+                        <?php _e('Disable Avatar', 'disable-comments'); ?>
+                    </label>
+                </div>
+            </div>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire network. If you want to change the Avatar setting specifically on your subsites by enabling site-wise settings, select "Don\'t change" from here.', 'disable-comments'); ?></p>
+        </div>
+
+        <?php endif;?>
     </div>
     <div class="disable__comment__option mb50">
         <h3 class="title"><?php _e('Disable Comments With API', 'disable-comments'); ?></h3>

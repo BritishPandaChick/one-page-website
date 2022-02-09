@@ -3,9 +3,9 @@ Contributors: hcabrera
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hcabrerab%40gmail%2ecom&lc=GB&item_name=WordPress%20Popular%20Posts%20Plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG_global%2egif%3aNonHosted
 Tags: popular, posts, widget, popularity, top
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 5.5.0
+Stable tag: 5.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,18 @@ WordPress Popular Posts is a highly customizable widget that displays your most 
 * **Template tags** - Don't feel like using widgets? No problem! You can still embed your most popular entries on your theme using the `wpp_get_mostpopular()` template tag. Additionally, the `wpp_get_views()` template tag allows you to retrieve the views count for a particular post. For usage and instructions, please refer to the [Installation section](https://wordpress.org/plugins/wordpress-popular-posts/#installation).
 * **Localization** - [Translate WPP into your own language](https://github.com/cabrerahector/wordpress-popular-posts/wiki/5.-FAQ#i-want-to-translate-your-plugin-into-my-language--help-you-update-a-translation-what-do-i-need-to-do).
 * **[WP-PostRatings](https://wordpress.org/plugins/wp-postratings/) support** - Show your visitors how your readers are rating your posts!
+
+= PSA: do not use the classic WordPress Popular Posts widget with the new Widgets screen! =
+
+The classic WordPress Popular Posts widget doesn't work very well / at all with the new Widgets screen introduced with WordPress 5.8.
+
+This new Widgets screen expects WordPress blocks instead of regular WordPress widgets. If you're using the WordPress Popular Posts widget on your block-based Widgets screen please consider replacing it with the [WordPress Popular Posts block](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-3-improved-php-8-support-retina-display-support-and-more/#block-editor-support) instead - it has the same features as the "classic" widget and will likely end up replacing it entirely in the future.
+
+Bjorn from wplearninglab.com was kind enough to create a video explaining how to use the new block for all of you visual learners:
+
+[youtube https://www.youtube.com/watch?v=mtzk6yNEaFs]
+
+If for some reason you prefer using the "classic" WordPress Popular Posts widget with WordPress 5.8 and beyond please install the [Classic Widgets](https://wordpress.org/plugins/classic-widgets/) plugin.
 
 = Support the Project! =
 
@@ -97,6 +109,17 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 
 == Changelog ==
 
+= 5.5.1 =
+
+**If you're using a caching plugin flushing its cache after upgrading to this version is highly recommended.**
+
+- Fixes an issue where the WordPress Popular Posts block would, under specific conditions, output code that may break the page layout (thanks @shoelaced and @themosaurus for the report!)
+- Fixes minor variable declaration bug in wpp.js.min.
+- Cleans up inline style tag (thanks @gabu69 and Lohen Florent for the suggestions!)
+- Other minor fixes & changes.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-5-qol-improvements-and-php-5-announcement/#minor-updates-and-hotfixes)
+
 = 5.5.0 =
 
 - Adds the Sort by Average Daily Views option from the classic widget to the WordPress Popular Posts block.
@@ -146,5 +169,5 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 * Flame graphic by freevector/Vecteezy.com.
 
 == Upgrade Notice ==
-= 5.4.0 =
+= 5.5.1 =
 If you're using a caching plugin flushing its cache after upgrading to this version is highly recommended.

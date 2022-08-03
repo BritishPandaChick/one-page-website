@@ -11,11 +11,12 @@
 
 namespace WordPressPopularPosts\Front;
 
-use WordPressPopularPosts\Helper;
-use WordPressPopularPosts\Output;
-use WordPressPopularPosts\Query;
+use WordPressPopularPosts\{ Helper, Output, Translate };
+use WordPressPopularPosts\Traits\QueriesPosts;
 
 class Front {
+
+    use QueriesPosts;
 
     /**
      * Plugin options.
@@ -47,8 +48,9 @@ class Front {
      * @since   5.0.0
      * @param   array                               $config     Admin settings.
      * @param   \WordPressPopularPosts\Translate    $translate  Translate class.
+     * @param   \WordPressPopularPosts\Output       $output     Output class.
      */
-    public function __construct(array $config, \WordPressPopularPosts\Translate $translate, \WordPressPopularPosts\Output $output)
+    public function __construct(array $config, Translate $translate, Output $output)
     {
         $this->config = $config;
         $this->translate = $translate;
@@ -145,7 +147,7 @@ class Front {
      * @param   string  $src
      * @return  string  $tag
      */
-    function convert_inline_js_into_json($tag, $handle, $src)
+    function convert_inline_js_into_json(string $tag, string $handle, string $src)
     {
         if ( 'wpp-js' === $handle ) {
             // id attribute found, replace it
@@ -209,12 +211,7 @@ class Front {
      * @param    int       $post_ID
      * @return   bool|int  FALSE if query failed, TRUE on success
      */
-    private function update_views_count($post_ID) {
-        /*
-        TODO:
-        For WordPress Multisite, we must define the DIEONDBERROR constant for database errors to display like so:
-        <?php define( 'DIEONDBERROR', true ); ?>
-        */
+    private function update_views_count(int $post_ID) {
         global $wpdb;
         $table = $wpdb->prefix . "popularposts";
         $wpdb->show_errors();
@@ -281,7 +278,7 @@ class Front {
      * @param    array    $atts    User defined attributes in shortcode tag
      * @return   string
      */
-    public function wpp_shortcode($atts = null) {
+    public function wpp_shortcode($atts = null) { /** @TODO: starting PHP 8.0 $atts can be declared as mixed $meta_value (if not set WP gives an string, and it set we get an array) */
         /**
         * @var string $header
         * @var int $limit
@@ -367,7 +364,7 @@ class Front {
             'time_unit' => ( in_array($time_unit, $time_units) ) ? $time_unit : 'hour',
             'freshness' => empty($freshness) ? false : $freshness,
             'order_by' => ( in_array($order_by, $order_by_values) ) ? $order_by : 'views',
-            'post_type' => empty($post_type) ? 'post,page' : $post_type,
+            'post_type' => empty($post_type) ? 'post' : $post_type,
             'pid' => rtrim(preg_replace('|[^0-9,]|', '', $pid), ","),
             'cat' => rtrim(preg_replace('|[^0-9,-]|', '', $cat), ","),
             'taxonomy' => empty($taxonomy) ? 'category' : $taxonomy,
@@ -450,38 +447,7 @@ class Front {
             $shortcode_content .= htmlspecialchars_decode($header_start, ENT_QUOTES) . $header . htmlspecialchars_decode($header_end, ENT_QUOTES);
         }
 
-        // Return cached results
-        if ( $this->config['tools']['cache']['active'] ) {
-
-            $key = md5(json_encode($shortcode_ops));
-            $popular_posts = \WordPressPopularPosts\Cache::get($key);
-
-            if ( false === $popular_posts ) {
-                $popular_posts = new Query($shortcode_ops);
-
-                $time_value = $this->config['tools']['cache']['interval']['value']; // eg. 5
-                $time_unit = $this->config['tools']['cache']['interval']['time']; // eg. 'minute'
-
-                // No popular posts found, check again in 1 minute
-                if ( ! $popular_posts->get_posts() ) {
-                    $time_value = 1;
-                    $time_unit = 'minute';
-                }
-
-                \WordPressPopularPosts\Cache::set(
-                    $key,
-                    $popular_posts,
-                    $time_value,
-                    $time_unit
-                );
-            }
-
-            $cached = true;
-
-        } // Get popular posts
-        else {
-            $popular_posts = new Query($shortcode_ops);
-        }
+        $popular_posts = $this->maybe_query($shortcode_ops);
 
         $this->output->set_data($popular_posts->get_posts());
         $this->output->set_public_options($shortcode_ops);

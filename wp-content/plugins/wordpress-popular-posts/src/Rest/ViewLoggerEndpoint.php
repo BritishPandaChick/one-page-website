@@ -57,6 +57,12 @@ class ViewLoggerEndpoint extends Endpoint {
           ? $sampling_rate
           : 1;
 
+        $original_views_count = $views;
+        $views = apply_filters('wpp_update_views_count_value', $views, $post_ID, $sampling, $sampling_rate);
+
+        if ( ! Helper::is_number($views) || $views <= 0 )
+            $views = $original_views_count;
+
         // Allow WP themers / coders perform an action
         // before updating views count
         if ( has_action('wpp_pre_update_views') )
@@ -74,7 +80,7 @@ class ViewLoggerEndpoint extends Endpoint {
             && WPP_CACHE_VIEWS
         ) {
 
-            $now_datetime = new \DateTime($now, new \DateTimeZone(Helper::get_timezone()));
+            $now_datetime = new \DateTime($now, wp_timezone());
             $timestamp = $now_datetime->getTimestamp();
             $date_time = $now_datetime->format('Y-m-d H:i');
             $date_time_with_seconds = $now_datetime->format('Y-m-d H:i:s');
@@ -103,7 +109,7 @@ class ViewLoggerEndpoint extends Endpoint {
             wp_cache_set('_wpp_cache', $wpp_cache, 'transient', 0);
 
             // How long has it been since the last time we saved to the database?
-            $last_update = $now_datetime->diff(new \DateTime($wpp_cache['last_updated'], new \DateTimeZone(Helper::get_timezone())));
+            $last_update = $now_datetime->diff(new \DateTime($wpp_cache['last_updated'], wp_timezone()));
             $diff_in_minutes = $last_update->days * 24 * 60;
             $diff_in_minutes += $last_update->h * 60;
             $diff_in_minutes += $last_update->i;

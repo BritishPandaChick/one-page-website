@@ -2,10 +2,10 @@
 Contributors: hcabrera
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hcabrerab%40gmail%2ecom&lc=GB&item_name=WordPress%20Popular%20Posts%20Plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG_global%2egif%3aNonHosted
 Tags: popular, posts, widget, popularity, top
-Requires at least: 4.9
-Tested up to: 5.9
-Requires PHP: 5.4
-Stable tag: 5.5.1
+Requires at least: 5.3
+Tested up to: 6.0.1
+Requires PHP: 7.2
+Stable tag: 6.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,7 +90,7 @@ That's it!
 
 WordPress Popular Posts can be used in three different ways:
 
-1. As a [widget](https://wordpress.org/support/article/wordpress-widgets/): simply drag and drop it into your theme's sidebar and configure it.
+1. As a [widget](https://wordpress.org/support/article/wordpress-widgets/): simply drag and drop it into your theme's sidebar and configure it or, if you're using the [Block Editor](https://wordpress.org/support/article/wordpress-editor/), you can also add it to your posts and pages.
 2. As a template tag: you can place it anywhere on your theme with [`wpp_get_mostpopular()`](https://github.com/cabrerahector/wordpress-popular-posts/wiki/2.-Template-tags#wpp_get_mostpopular).
 3. Via [shortcode](https://github.com/cabrerahector/wordpress-popular-posts/wiki/1.-Using-WPP-on-posts-&-pages), so you can embed it inside a post or a page.
 
@@ -108,6 +108,46 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 4. Statistics panel.
 
 == Changelog ==
+
+= 6.0.3 =
+
+- WPCS updates.
+- Fixes an issue where excerpts may output broken HTML under certain conditions (thanks ozboss1!)
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-6-0-php-5-support-dropped-minimum-supported-wordpress-changed/#6.0.3)
+
+= 6.0.2 =
+
+- Fixes issue with Stats dashboard not loading for Linux users (thanks agbuere!)
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-6-0-php-5-support-dropped-minimum-supported-wordpress-changed/#6.0.2)
+
+= 6.0.1 =
+
+- Security improvements.
+- Fixes fatal error in Image class (thanks Senri Miura!)
+- Fixes fatal error in "classic" widget when using widget themes (thanks Finn Jackson!)
+- Updates ChartJS to version 3.8.0.
+- Small improvements / fixes.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-6-0-php-5-support-dropped-minimum-supported-wordpress-changed/#minor-updates-and-hotfixes)
+
+= 6.0.0 =
+
+**This release introduces a couple of major changes so please review before updating.**
+
+- Minimum required PHP version is now 7.2.
+- Minimum required WordPress version is now 5.3.
+- Breaking change: this version removes code that has been deprecated for a long time. See the release notes for more details.
+- Widget block: fixes an issue where the length of the title when set via theme was being ignored.
+- Widget block: fixes bug with thumbnail not rendering under certain circumstances (thanks the9mm!)
+- Admin: the Statistics screen will now by default only lists posts. See the release notes for more details.
+- Admin: only users with `edit_others_posts` capability (usually Editors and Administrators) will be able to access certain areas of WPP's dashboard.
+- Admin: makes sure to escape params from `add_query_arg()`.
+- Fixes an issue where widget themes stored in child theme's folder would not be recognized by the plugin.
+- Small improvements / fixes.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-6-0-php-5-support-dropped-minimum-supported-wordpress-changed/)
 
 = 5.5.1 =
 
@@ -129,38 +169,6 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 - Other minor performances improvements and fixes.
 
 [Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-5-qol-improvements-and-php-5-announcement/)
-
-= 5.4.2 =
-
-- Fixes a rare issue that prevented some users from seeing the Statistics chart (thanks Zsolt!)
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-4-widget-block-improvements-plus-prep-work-for-csp-support/#5.4.2)
-
-= 5.4.1 =
-
-**If you're using a caching plugin flushing its cache after upgrading to this version is highly recommended.**
-
-- Widget block: fixes WPP block loading block editor JS files on the front end.
-- Adds filter hook to disable Block editor support.
-- Improves logic of filter hooks `wpp_excerpt_more` and `wpp_title_more`.
-- The Parameters section has been moved to the Wiki (see https://git.io/JEOrX).
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-4-widget-block-improvements-plus-prep-work-for-csp-support/#5.4.1)
-
-= 5.4.0 =
-
-**If you're using a caching plugin flushing its cache after upgrading to this version is highly recommended.**
-
-- The widget block is no longer an experimental feature and is now available to everyone (but it's still a WIP).
-- Widget block: adds AJAX support to prevent caching plugins from caching your popular posts block.
-- Widget block: adds WPML/Polylang support.
-- Widget block: fixes widget heading not displaying.
-- Widget themes: allow themes to detect the current post so it can be styled differently.
-- Fixes `wpp_excerpt_more` filter hook not working (props to SchweizerSchoggi!)
-- Adds filter hook `wpp_title_more` to allow customization of the prefix added to shortened post titles.
-- Removes inline JavaScript code from WPP's dashboard in preparation for [WordPress' CSP adoption](https://core.trac.wordpress.org/ticket/51407).
-
-[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-4-widget-block-improvements-plus-prep-work-for-csp-support/)
 
 [Full Changelog](https://github.com/cabrerahector/wordpress-popular-posts/blob/master/changelog.md)
 

@@ -1,7 +1,7 @@
 <?php
 namespace WordPressPopularPosts\Rest;
 
-use WordPressPopularPosts\Query;
+use WordPressPopularPosts\Translate;
 
 abstract class Endpoint extends \WP_REST_Controller {
 
@@ -26,9 +26,8 @@ abstract class Endpoint extends \WP_REST_Controller {
      *
      * @param   array
      * @param   \WordPressPopularPosts\Translate
-     * @param   \WordPressPopularPosts\Output
      */
-    public function __construct(array $config, \WordPressPopularPosts\Translate $translate)
+    public function __construct(array $config, Translate $translate)
     {
         $this->config = $config;
         $this->translate = $translate;
@@ -42,54 +41,11 @@ abstract class Endpoint extends \WP_REST_Controller {
     abstract public function register();
 
     /**
-     * Gets Query object from cache if it exists,
-     * otherwise a new Query object will be
-     * instantiated and returned.
-     *
-     * @since   5.0.3
-     * @param   array
-     * @return  Query
-     */
-    protected function maybe_query(array $params)
-    {
-        // Return cached results
-        if ( $this->config['tools']['cache']['active'] ) {
-            $key = 'wpp_' . md5(json_encode($params));
-            $query = \WordPressPopularPosts\Cache::get($key);
-
-            if ( false === $query ) {
-                $query = new Query($params);
-
-                $time_value = $this->config['tools']['cache']['interval']['value'];
-                $time_unit = $this->config['tools']['cache']['interval']['time'];
-
-                // No popular posts found, check again in 1 minute
-                if ( ! $query->get_posts() ) {
-                    $time_value = 1;
-                    $time_unit = 'minute';
-                }
-
-                \WordPressPopularPosts\Cache::set(
-                    $key,
-                    $query,
-                    $time_value,
-                    $time_unit
-                );
-            }
-        } // Get real-time popular posts
-        else {
-            $query = new Query($params);
-        }
-
-        return $query;
-    }
-
-    /**
      * Sets language/locale.
      *
      * @since   5.3.0
      */
-    protected function set_lang($lang)
+    protected function set_lang(?string $lang)
     {
         // Multilang support
         if ( $lang ) {

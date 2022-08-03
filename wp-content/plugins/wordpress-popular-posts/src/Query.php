@@ -5,7 +5,13 @@
  * To use this class, you must pass it an array of parameters (mostly the same ones used with
  * the wpp_get_mostpopular() template tag).
  *
- * eg.: $popular_posts = new Query(['range' => 'last7days', 'order_by' => 'views', 'limit' => 5]);
+ * eg.:
+ * $popular_posts = new \WordPressPopularPosts\Query([
+ *  'range' => 'last7days',
+ *  'order_by' => 'views',
+ *  'limit' => 5
+ * ]);
+ * var_dump( $popular_posts->get_posts() );
  *
  * @since             4.0.0
  * @package           WordPressPopularPosts
@@ -49,9 +55,8 @@ class Query {
      */
     public function __construct(array $options = [])
     {
-        $this->options = $options;
-        $this->build_query();
-        $this->run_query();
+        $this->set_options($options)
+            ->execute();
     }
 
     /**
@@ -59,10 +64,15 @@ class Query {
      *
      * @since   5.0.0
      * @param   array   $options
+     * @return  WordPressPopularPosts\Query
      */
     public function set_options(array $options = [])
     {
         $this->options = $options;
+        // Reset posts array
+        $this->posts = [];
+
+        return $this;
     }
 
     /**
@@ -85,7 +95,7 @@ class Query {
                 (array) $this->options
             );
 
-            $now = new \DateTime(Helper::now(), new \DateTimeZone(Helper::get_timezone()));
+            $now = new \DateTime(Helper::now(),wp_timezone());
             $args = [];
             $fields = "p.ID AS id, p.post_title AS title, p.post_author AS uid";
             $table = "";
@@ -487,6 +497,20 @@ class Query {
         if ( isset($wpdb) && !empty($this->query) && !is_wp_error($this->query) ) {
             $this->posts = $wpdb->get_results($this->query);
         }
+    }
+
+    /**
+     * Executes the query.
+     *
+     * @since   6.0.0
+     * @return  WordPressPopularPosts\Query
+     */
+    public function execute()
+    {
+        $this->build_query();
+        $this->run_query();
+
+        return $this;
     }
 
     /**

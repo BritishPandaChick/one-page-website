@@ -380,7 +380,7 @@ export class WPPWidgetBlockEdit extends Component
 
         function onDisplayExcerptChange(value) {
             if ( false == value )
-                setAttributes({ excerpt_length: 0, excerpt_by_words: 0, display_post_excerpt: value });
+                setAttributes({ excerpt_length: 0, excerpt_by_words: 0, display_post_excerpt: value, excerpt_format: false });
             else
                 setAttributes({ display_post_excerpt: value, excerpt_length: 55 });
         }
@@ -393,7 +393,7 @@ export class WPPWidgetBlockEdit extends Component
 
         function onDisplayThumbnailChange(value) {
             if ( false == value )
-                setAttributes({ thumbnail_width: 0, thumbnail_height: 0, display_post_thumbnail: value });
+                setAttributes({ thumbnail_width: 0, thumbnail_height: 0, display_post_thumbnail: value, thumbnail_build: 'manual' });
             else
                 setAttributes({ thumbnail_width: 75, thumbnail_height: 75, display_post_thumbnail: value });
         }
@@ -413,6 +413,12 @@ export class WPPWidgetBlockEdit extends Component
                     thumbnail_width: _self.state.imgSizes[sizes[fallback].value].width,
                     thumbnail_height: _self.state.imgSizes[sizes[fallback].value].height,
                     thumbnail_size: sizes[fallback].value
+                });
+            } else {
+                setAttributes({
+                    thumbnail_width: 75,
+                    thumbnail_height: 75,
+                    thumbnail_size: ''
                 });
             }
             setAttributes({ thumbnail_build: value });
@@ -531,6 +537,13 @@ export class WPPWidgetBlockEdit extends Component
                         </Fragment>
                     }
                 </div>
+            }
+            { _wordpress_popular_posts.can_show_rating &&
+                <CheckboxControl
+                    label={__('Display post rating', 'wordpress-popular-posts')}
+                    checked={attributes.rating}
+                    onChange={(value) => setAttributes({ rating: value })}
+                />
             }
         </Fragment>;
     }
@@ -668,7 +681,7 @@ export class WPPWidgetBlockEdit extends Component
         }
 
         return <Fragment>
-            <p className='not-a-legend'><strong>{__('HTML Markup settings', 'wordpress-popular-posts')}</strong></p>
+            <p className='not-a-legend'><strong>{__('HTML Markup settings', 'wordpress-popular-posts')}</strong> <small>(<a href="https://github.com/cabrerahector/wordpress-popular-posts/wiki/5.-FAQ#how-can-i-use-my-own-html-markup-with-your-plugin" target="_blank">{__('What is this?', 'wordpress-popular-posts')}</a>)</small></p>
             <CheckboxControl
                 label={__('Use custom HTML Markup', 'wordpress-popular-posts')}
                 checked={attributes.custom_html}
@@ -705,6 +718,7 @@ export class WPPWidgetBlockEdit extends Component
                         value={attributes.post_html}
                         onChange={(value) => setAttributes({ post_html: value })}
                     />
+                    <small><a href="https://github.com/cabrerahector/wordpress-popular-posts/wiki/2.-Template-tags#content-tags" target="_blank">{__('Content Tags List', 'wordpress-popular-posts')}</a></small>
                 </div>
             }
             <SelectControl

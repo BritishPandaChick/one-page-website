@@ -21,7 +21,7 @@ class Widget extends \WP_Widget {
      * Administrative settings.
      *
      * @since   2.3.3
-     * @var	    array
+     * @var     array
      */
     private $config = [];
 
@@ -139,7 +139,7 @@ class Widget extends \WP_Widget {
             (array) $instance
         );
 
-        echo "\n" . $before_widget . "\n";
+        echo "\n" . $before_widget . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
         // Has user set a title?
         if ( '' != $instance['title'] ) {
@@ -147,11 +147,13 @@ class Widget extends \WP_Widget {
 
             if (
                 $instance['markup']['custom_html']
-                && $instance['markup']['title-start'] != ""
-                && $instance['markup']['title-end'] != ""
+                && $instance['markup']['title-start'] != ''
+                && $instance['markup']['title-end'] != ''
             ) {
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 echo htmlspecialchars_decode($instance['markup']['title-start'], ENT_QUOTES) . $title . htmlspecialchars_decode($instance['markup']['title-end'], ENT_QUOTES);
             } else {
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 echo $before_title . $title . $after_title;
             }
         }
@@ -166,10 +168,38 @@ class Widget extends \WP_Widget {
             <div class="wpp-widget-placeholder" data-widget-id="<?php echo esc_attr($widget_id); ?>"></div>
             <?php
         } else {
+            $notice = '';
+
+            if ( is_user_logged_in() && current_user_can('manage_options') ) {
+                ob_start();
+                ?>
+                <style>
+                    .wpp-notice {
+                        margin: 0 0 22px;
+                        padding: 18px 22px;
+                        background: #fcfcf7;
+                        border: #ffff63 4px solid;
+                    }
+
+                        .wpp-notice p:nth-child(2n) {
+                            margin: 0;
+                            font-size: 0.85em;
+                        }
+                </style>
+                <div class="wpp-notice">
+                    <p><strong>Important notice for administrators:</strong> The WordPress Popular Posts "classic" widget is going away!</p>
+                    <p>This widget has been deprecated. Please replace it with the WordPress Popular Posts block or the wpp shortcode as soon as possible.</p>
+                </div>
+                <?php
+                $notice = ob_get_clean() . "\n";
+            }
+
+            echo $notice;
+
             $this->get_popular($instance);
         }
 
-        echo "\n" . $after_widget . "\n";
+        echo "\n" . $after_widget . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -228,13 +258,13 @@ class Widget extends \WP_Widget {
         $instance['freshness'] = isset($new_instance['freshness']);
 
         // Post / Page / CTP filter
-        $ids = array_filter(explode(",", rtrim(preg_replace('|[^0-9,]|', '', $new_instance['pid']), ",")), 'is_numeric');
+        $ids = array_filter(explode(',', rtrim(preg_replace('|[^0-9,]|', '', $new_instance['pid']), ',')), 'is_numeric');
         // Got no valid IDs, clear
         if ( empty($ids) ) {
             $instance['pid'] = '';
         }
         else {
-            $instance['pid'] = implode(",", $ids);
+            $instance['pid'] = implode(',', $ids);
         }
 
         // Taxonomy filter
@@ -244,7 +274,7 @@ class Widget extends \WP_Widget {
             // Remove taxonomies that don't have any valid term IDs
             foreach( $taxonomies['terms'] as $taxonomy => $terms ) {
                 $taxonomies['terms'][$taxonomy] = array_filter(
-                    explode(",", trim(preg_replace('|[^0-9,-]|', '', $taxonomies['terms'][$taxonomy]), ", ")),
+                    explode(',', trim(preg_replace('|[^0-9,-]|', '', $taxonomies['terms'][$taxonomy]), ', ')),
                     'is_numeric'
                 );
 
@@ -269,13 +299,13 @@ class Widget extends \WP_Widget {
         }
 
         // Author filter
-        $ids = array_filter(explode(",", rtrim(preg_replace('|[^0-9,]|', '', $new_instance['uid']), ",")), 'is_numeric');
+        $ids = array_filter(explode(',', rtrim(preg_replace('|[^0-9,]|', '', $new_instance['uid']), ',')), 'is_numeric');
         // Got no valid IDs, clear
         if ( empty($ids) ) {
             $instance['author'] = '';
         }
         else {
-            $instance['author'] = implode( ",", $ids );
+            $instance['author'] = implode( ',', $ids );
         }
 
         $instance['shorten_title']['words'] = $new_instance['shorten_title-words'];
@@ -418,8 +448,9 @@ class Widget extends \WP_Widget {
         $sidebars = wp_get_sidebars_widgets();
 
         foreach ( (array) $sidebars as $sidebar_id => $sidebar ) {
-            if ( in_array($this->id, (array) $sidebar, true ) )
+            if ( in_array($this->id, (array) $sidebar, true ) ) {
                 return $wp_registered_sidebars[$sidebar_id];
+            }
         }
 
         return null;

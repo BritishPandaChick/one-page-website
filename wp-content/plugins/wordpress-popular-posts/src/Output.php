@@ -153,7 +153,55 @@ class Output {
      */
     public function get_output()
     {
-        $this->output = "\n" . ( WP_DEBUG ? '<!-- WordPress Popular Posts v' . WPP_VERSION . ( $this->admin_options['tools']['cache']['active'] ? ' - cached' : '' ) . ' -->' : '' ) . "\n" . $this->output;
+        $this->output = ( WP_DEBUG ? "\n" . '<!-- WordPress Popular Posts v' . WPP_VERSION . ( $this->admin_options['tools']['cache']['active'] ? ' - cached' : '' ) . ' -->' . "\n" : '' ) . $this->output;
+
+        // Attempt to close open tags
+        $this->output = force_balance_tags($this->output);
+
+        // Remove empty tags
+        $clean_html = '';
+        $html = '<!DOCTYPE html><html><head><meta charset="UTF-8" /></head><body>' . trim($this->output) . '</body></html>';
+
+        $dom = new \DOMDocument();
+        $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'), LIBXML_NOERROR | LIBXML_NOWARNING | LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $xpath = new \DOMXPath($dom);
+
+        while ( ($node_list = $xpath->query('//*[not(*) and not(@*) and not(text()[normalize-space()])]')) && $node_list->length ) {
+            foreach ($node_list as $node) {
+                $node->parentNode->removeChild($node);
+            }
+        }
+
+        $body = $dom->getElementsByTagName('body')->item(0);
+
+        foreach( $body->childNodes as $node ) {
+            $clean_html .= $dom->saveHTML($node);
+        }
+
+        $this->output = trim($clean_html);
+
+        // Sanitize HTML
+        $allowed_tags = wp_kses_allowed_html('post');
+
+        if ( isset($allowed_tags['form']) ) {
+            unset($allowed_tags['form']);
+        }
+
+        if (
+            isset($this->public_options['theme']['name'])
+            && $this->public_options['theme']['name']
+        ) {
+            $allowed_tags['style'] = [
+                'id' => 1,
+                'nonce' => 1,
+            ];
+        }
+
+        $allowed_tags['img']['decoding'] = true;
+        $allowed_tags['img']['srcset'] = true;
+
+        $this->output = wp_kses($this->output, $allowed_tags);
+
         return $this->output;
     }
 

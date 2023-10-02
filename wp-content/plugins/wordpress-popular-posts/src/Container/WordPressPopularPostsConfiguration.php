@@ -5,6 +5,7 @@ use WordPressPopularPosts\{ Image, I18N, Output, Settings, Themer, Translate, Wo
 use WordPressPopularPosts\Admin\Admin;
 use WordPressPopularPosts\Block\Widget\Widget as BlockWidget;
 use WordPressPopularPosts\Front\Front;
+use WordPressPopularPosts\Shortcode\ShortcodeLoader;
 use WordPressPopularPosts\Rest\{ Controller, PostsEndpoint, TaxonomiesEndpoint, ThemesEndpoint, ThumbnailsEndpoint, ViewLoggerEndpoint, WidgetEndpoint };
 use WordPressPopularPosts\Widget\Widget;
 
@@ -133,7 +134,13 @@ class WordPressPopularPostsConfiguration implements ContainerConfigurationInterf
         $container['front'] = $container->service(function(Container $container) {
             return new Front(
                 $container['admin_options'],
-                $container['translate'],
+                $container['translate']
+            );
+        });
+
+        $container['shortcode_loader'] = $container->service(function(Container $container) {
+            return new ShortcodeLoader(
+                $container['admin_options'],
                 $container['output']
             );
         });
@@ -145,7 +152,8 @@ class WordPressPopularPostsConfiguration implements ContainerConfigurationInterf
                 $container['admin'],
                 $container['front'],
                 $container['widget'],
-                $container['block_widget']
+                $container['block_widget'],
+                $container['shortcode_loader']
             );
         });
     }

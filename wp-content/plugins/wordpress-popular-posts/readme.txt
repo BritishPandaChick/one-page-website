@@ -1,11 +1,11 @@
 === WordPress Popular Posts ===
 Contributors: hcabrera
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hcabrerab%40gmail%2ecom&lc=GB&item_name=WordPress%20Popular%20Posts%20Plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG_global%2egif%3aNonHosted
+Donate link: https://ko-fi.com/cabrerahector
 Tags: popular, posts, widget, popularity, top
 Requires at least: 5.3
-Tested up to: 6.3
+Tested up to: 6.3.1
 Requires PHP: 7.2
-Stable tag: 6.3.2
+Stable tag: 6.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,7 +52,7 @@ If for some reason you prefer using the "classic" WordPress Popular Posts widget
 
 If you'd like to support my work and efforts to creating and maintaining more open source projects your donations and messages of support mean a lot!
 
-[Buy me a coffee](https://ko-fi.com/cabrerahector) | [PayPal Me](https://paypal.me/cabrerahector)
+[Buy me a coffee](https://ko-fi.com/cabrerahector)
 
 **WordPress Popular Posts** is now also on [GitHub](https://github.com/cabrerahector/wordpress-popular-posts)!
 
@@ -108,6 +108,13 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 4. Statistics panel.
 
 == Changelog ==
+
+= 6.3.3 =
+
+- Security enhancements (props to the Patchstack team!)
+- Updates dependencies.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-6-3-new-shortcode-to-display-views-count-php-8-compatibility-improvements/#6.3.3)
 
 = 6.3.2 =
 

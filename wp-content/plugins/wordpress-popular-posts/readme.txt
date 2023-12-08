@@ -3,9 +3,9 @@ Contributors: hcabrera
 Donate link: https://ko-fi.com/cabrerahector
 Tags: popular, posts, widget, popularity, top
 Requires at least: 5.3
-Tested up to: 6.3.1
+Tested up to: 6.4.1
 Requires PHP: 7.2
-Stable tag: 6.3.3
+Stable tag: 6.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,7 +52,7 @@ If for some reason you prefer using the "classic" WordPress Popular Posts widget
 
 If you'd like to support my work and efforts to creating and maintaining more open source projects your donations and messages of support mean a lot!
 
-[Buy me a coffee](https://ko-fi.com/cabrerahector)
+[Buy me a coffee](https://ko-fi.com/cabrerahector) | [PayPal](https://www.paypal.com/paypalme/cabrerahector)
 
 **WordPress Popular Posts** is now also on [GitHub](https://github.com/cabrerahector/wordpress-popular-posts)!
 
@@ -108,6 +108,16 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 4. Statistics panel.
 
 == Changelog ==
+
+= 6.3.4 =
+
+**If you're using a caching plugin on your website, clearing its cache after installing / updating to this version is highly recommended.**
+
+- Patches issue affecting non-HTML5 friendly WordPress themes after the WP 6.4 update.
+- Adds a button to reset the default thumbnail.
+- Minor fixes and improvements.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-6-3-new-shortcode-to-display-views-count-php-8-compatibility-improvements/#6.3.4)
 
 = 6.3.3 =
 

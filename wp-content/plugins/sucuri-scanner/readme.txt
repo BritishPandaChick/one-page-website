@@ -3,8 +3,8 @@ Contributors: wordpress@sucuri.net
 Donate Link: https://sucuri.net/
 Tags: malware, security, firewall, scan, spam, virus, sucuri, protection, blocklist, detection, hardening, file integrity
 Requires at least: 3.6
-Tested up to: 6.4
-Stable tag: 1.8.43
+Tested up to: 6.6
+Stable tag: 1.9.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,7 @@ It offers its users a set of security features for their website, each designed 
 * Post-Hack Security Actions
 * Security Notifications
 * Website Firewall (premium)
+* Cache-Control header administration
 
 == Installation  ==
 
@@ -51,9 +52,7 @@ This is perhaps the most underutilized security function. It’s the act of moni
 
 This is important because it gives you, the website owner, the ability to keep a good eye on the various changes occurring within your environment. Who is logging in? What changes are being made?
 
-This feature is logging all activity to the Sucuri cloud, for safe keeping. This ensures that an attacker is not able to wipe your forensic data and prevent further security analysis after a compromise. If an attacker is able to bypass your security controls, your security logs will be kept safe within the Sucuri Security Operations Center (SOC).
-
-This feature is particularly important to website / system administrators and security experts looking to understand what is going on with their website and when it’s happening.
+Since version 1.9.6, we have added support for filters in the audit logs, allowing you to filter by various event types and dates.
 
 = What is the file integrity monitoring =
 
@@ -175,6 +174,10 @@ No, it is not required. The Website Firewall runs in the cloud without the need 
 
 We take your privacy seriously. For free plugin users without an API key, no information is collected by Sucuri. After activating an API key, Sucuri will store some information, such as logs. Please see our [Terms of Service](https://sucuri.net/terms) and [Privacy Policy](https://sucuri.net/privacy). Please email gdpr@sucuri.net if you have other questions about your privacy.
 
+# How do I configure the Cache-Control header?
+
+Go to Settings > Headers and enable the Cache-Control header selecting a mode according to your website's need and click on submit. You can also activate the Cache-Control header by updating the cache header fields in one of the page types by using the "Edit" button in the table rows. Please enable site caching on your WAF to use these settings. If you are a Sucuri client and require assistance, please [create a ticket](https://sucuri.net/privacy) and reach out to the firewall team for support.
+
 == Screenshots ==
 
 1. WordPress Integrity Tool - Detects added, modified, and removed files.
@@ -185,6 +188,7 @@ We take your privacy seriously. For free plugin users without an API key, no inf
 6. Failed Logins - Shows failed login attempts, successful logins and online users.
 7. Post Hack Tools - Offers multiple tools to react after the suspiciousness of a hack.
 8. Settings - Offers multiple settings to configure the functionality of the plugin.
+9. Cache control headers - Offers multiple options to configure the cache control header.
 
 == Upgrade Notice ==
 
@@ -200,6 +204,28 @@ This version adds an option to refresh the malware scan results on demand, as we
 Daniel is no longer maintaining the Sucuri plugin at GoDaddy. We have transferred it to a dedicated team to maintain and improve it.
 
 == Changelog ==
+= 1.9.6 =
+* Added support for filters in the audit logs
+* Updated messaging for infected sites
+
+= 1.9.5 =
+* Updated how the allow PHP files are handled in the integrity tool
+
+= 1.9.4 =
+* Fixed warning in php 8
+
+= 1.9.3 =
+* Fixed email notifications error handling
+
+= 1.9.2 =
+* Improve how the WordPress integrity tool displays added, modified, and removed files
+
+= 1.9.1 =
+* Add support for configuration of Cache-Control header
+
+= 1.8.44 =
+* Update Firewall settings page to improve privacy and offer new options to handle API keys
+
 = 1.8.43 =
 * Update readme and main plugin file to specify license
 * Update plugin's transient name to address to best practices
@@ -239,10 +265,10 @@ Daniel is no longer maintaining the Sucuri plugin at GoDaddy. We have transferre
 = 1.8.34 =
 * Added referer check on admin hooks
 
-= 1.8.33 = 
+= 1.8.33 =
 * Fixed "Added option to clear cache by path"
 
-= 1.8.32 = 
+= 1.8.32 =
 * Fixed "Empty wp-config file after automatic secret key updates"
 
 = 1.8.31 =

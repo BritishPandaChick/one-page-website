@@ -178,7 +178,7 @@ class Posts extends Shortcode {
                 'wpp-end' => empty($wpp_end) ? '' : $wpp_end,
                 'title-start' => empty($header_start) ? '' : $header_start,
                 'title-end' => empty($header_end) ? '' : $header_end,
-                'post-html' => empty($post_html) ? '<li>{thumb} {title} <span class="wpp-meta post-stats">{stats}</span></li>' : $post_html
+                'post-html' => empty($post_html) ? '<li class="{current_class}">{thumb} {title} <span class="wpp-meta post-stats">{stats}</span></li>' : $post_html
             ],
             'theme' => [
                 'name' => trim($theme)
@@ -209,14 +209,16 @@ class Posts extends Shortcode {
         $shortcode_content = '';
         $cached = false;
 
-        // is there a title defined by user?
+        // Has the user set a title?
         if (
             ! empty($header)
             && ! empty($header_start)
             && ! empty($header_end)
         ) {
-            $shortcode_content .= htmlspecialchars_decode($header_start, ENT_QUOTES) . $header . htmlspecialchars_decode($header_end, ENT_QUOTES);
-            $shortcode_content = Helper::sanitize_html($shortcode_content, $shortcode_ops);
+            $header_html = htmlspecialchars_decode($header_start, ENT_QUOTES) . $header . htmlspecialchars_decode($header_end, ENT_QUOTES);
+            $header_html = apply_filters('wpp_custom_header_html', $header_html, $shortcode_ops);
+            $header_html = Helper::sanitize_html($header_html, $shortcode_ops);
+            $shortcode_content .= $header_html;
         }
 
         $isAdmin = isset($_GET['isSelected']) ? $_GET['isSelected'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- isSelected is a boolean from wp-admin

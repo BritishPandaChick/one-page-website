@@ -2,10 +2,10 @@
 Contributors: hcabrera
 Donate link: https://ko-fi.com/cabrerahector
 Tags: popular, posts, widget, popularity, top
-Requires at least: 5.7
-Tested up to: 6.7.1
-Requires PHP: 7.2
-Stable tag: 7.2.0
+Requires at least: 5.9
+Tested up to: 6.7.2
+Requires PHP: 7.3
+Stable tag: 7.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,7 @@ WordPress Popular Posts is a highly customizable plugin that displays your most 
 * **Use your own layout!** - WPP is flexible enough to let you customize the look and feel of your popular posts! (see [customizing WPP's HTML markup](https://github.com/cabrerahector/wordpress-popular-posts/wiki/5.-FAQ#how-can-i-use-my-own-html-markup-with-your-plugin) and [How to style WordPress Popular Posts](https://github.com/cabrerahector/wordpress-popular-posts/wiki/6.-Styling-the-list) for more.)
 * **Advanced caching features!** - WordPress Popular Posts includes a few options to make sure your site's performance stays as good as ever! (see [Performance](https://github.com/cabrerahector/wordpress-popular-posts/wiki/7.-Performance) for more details.)
 * **REST API Support** - Embed your popular posts in your (web) app! (see [REST API Endpoints](https://github.com/cabrerahector/wordpress-popular-posts/wiki/8.-REST-API-Endpoints) for more.)
+* **Elementor support** - Are you building sites with Elementor? There's a popular posts widget for it too!
 * **Disqus support** - Sort your popular posts by Disqus comments count!
 * **Polylang & WPML 3.2+ support** - Show the translated version of your popular posts!
 * **WordPress Multisite support** - Each site on the network can have its own popular posts list!
@@ -38,9 +39,9 @@ WordPress Popular Posts is a highly customizable plugin that displays your most 
 
 = PSA: The classic WordPress Popular Posts widget has reached End-of-Life =
 
-The classic WordPress Popular Posts widget doesn't work very well / at all with the new Widgets screen introduced with WordPress 5.8.
+The classic WordPress Popular Posts widget doesn't work very well / at all with the [block-based Widgets editor](https://wordpress.org/documentation/article/block-based-widgets-editor/) introduced with WordPress 5.8.
 
-This new Widgets screen expects WordPress blocks instead of regular WordPress widgets. If you're using the classic WordPress Popular Posts widget please replace it with the [WordPress Popular Posts block](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-3-improved-php-8-support-retina-display-support-and-more/#block-editor-support) instead - it has the same features and functionality as the "classic" widget so you won't be missing anything at all. See the [Migration Guide](https://cabrerahector.com/wordpress/migrating-from-the-classic-popular-posts-widget/) for more details.
+This new Widgets editor expects [WordPress blocks](https://wordpress.org/documentation/article/blocks-list/) instead of regular WordPress widgets. If you're using the classic WordPress Popular Posts widget please replace it with the [WordPress Popular Posts block](https://cabrerahector.com/wordpress/wordpress-popular-posts-5-3-improved-php-8-support-retina-display-support-and-more/#block-editor-support) instead - it has the same features and functionality as the "classic" widget so you won't be missing anything at all. See the [Migration Guide](https://cabrerahector.com/wordpress/migrating-from-the-classic-popular-posts-widget/) for more details.
 
 Bjorn from wplearninglab.com was kind enough to create a video explaining how to use the new block for all of you visual learners:
 
@@ -88,11 +89,12 @@ That's it!
 
 = USAGE =
 
-WordPress Popular Posts can be used in three different ways:
+WordPress Popular Posts can be used in four different ways:
 
 1. If you're using the [Block Editor](https://wordpress.org/support/article/wordpress-editor/) you can insert a WordPress Popular Posts block on your sidebar and even anywhere within your posts and pages.
 2. As a template tag: you can place it anywhere on your theme with [`wpp_get_mostpopular()`](https://github.com/cabrerahector/wordpress-popular-posts/wiki/2.-Template-tags#wpp_get_mostpopular).
 3. Via [shortcode](https://github.com/cabrerahector/wordpress-popular-posts/wiki/1.-Using-WPP-on-posts-&-pages), so you can embed it inside a post or a page.
+4. If you're using [Elementor](https://wordpress.org/plugins/elementor/) on your site you can use the [WordPress Popular Posts widget for Elementor](https://cabrerahector.com/wordpress/wordpress-popular-posts-7-3-experimental-elementor-support/).
 
 Make sure to stop by the **[Wiki](https://github.com/cabrerahector/wordpress-popular-posts/wiki)** as well, you'll find even more info there!
 
@@ -104,10 +106,32 @@ The FAQ section has been moved [here](https://github.com/cabrerahector/wordpress
 
 1. The WordPress Popular Posts block.
 2. The WordPress Popular Posts block on theme's sidebar.
-3. Dashboard widget.
-4. Statistics panel.
+3. The WordPress Popular Posts widget for Elementor.
+4. Dashboard widget.
+5. Statistics panel.
 
 == Changelog ==
+
+= 7.3.1 =
+
+- Fixes wpp_start/end being striped out if empty (props to ispreview!)
+- Fixes posts not loading on the Stats screen for Author users (props to waheed61!)
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-7-3-experimental-elementor-support/#7.3.1)
+
+= 7.3.0 =
+
+**If you're using a caching plugin and/or a plugin that minifies JavaScript code it's highly recommended to clear its cache after installing / updating to this version.**
+
+- Adds Elementor support: WordPress Popular Posts now includes a native Elementor widget! See [Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-7-3-experimental-elementor-support/) for more details.
+- Adds [get_ids()](https://github.com/cabrerahector/wordpress-popular-posts/wiki/2.-Template-tags#wpp_get_ids) function to facilitate getting the IDs of your popular posts.
+- Admin section usability improvements.
+- The "Empty cache" and "Clear all data" buttons have been removed from the Admin section.
+- Improves compatibility with PHP 8.4 (thanks ispreview for the heads-up!)
+- Minimum required PHP version is now 7.3.
+- Minor code changes & improvements.
+
+[Release notes](https://cabrerahector.com/wordpress/wordpress-popular-posts-7-3-experimental-elementor-support/)
 
 = 7.2.0 =
 

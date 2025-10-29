@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Elementor WPP Widget.
  *
- * Elementor widget that inserts a WordPress Popular Posts list on your site.
+ * Elementor widget that inserts a WP Popular Posts list on your site.
  *
  * @since 7.3.0
  */
@@ -78,7 +78,7 @@ class Elementor_WPP_Widget extends \Elementor\Widget_Base {
      * @return string Widget title.
      */
     public function get_title(): string {
-        return 'WordPress Popular Posts';
+        return 'WP Popular Posts';
     }
 
     /**
@@ -216,9 +216,15 @@ class Elementor_WPP_Widget extends \Elementor\Widget_Base {
          */
         $settings = apply_filters('wpp_elementor_widget_settings', $settings, $widget_id);
 
-        /** Display widget ID above the list when in edit mode */
-        if ( $is_edit_mode && defined('WP_DEBUG') && WP_DEBUG ) {
-            echo '<p style="margin: 0 0 1em; font-size: 10px; font-weight: 600;">[Widget ID:' . esc_html($widget_id) . ']</p>';
+        /** While on edit mode... */
+        if ( $is_edit_mode ) {
+            /** ... disable AJAX loading */
+            $settings['ajaxify'] = 0;
+
+            /** ... display widget ID above the list when debug mode is on */
+            if ( defined('WP_DEBUG') && WP_DEBUG ) {
+                echo '<p style="margin: 0 0 1em; font-size: 10px; font-weight: 600;">[Widget ID:' . esc_html($widget_id) . ']</p>';
+            }
         }
 
         wpp_get_mostpopular($settings);

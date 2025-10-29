@@ -13,12 +13,12 @@
  * @package           WordPressPopularPosts
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Popular Posts
+ * Plugin Name:       WP Popular Posts
  * Plugin URI:        https://wordpress.org/plugins/wordpress-popular-posts/
- * Description:       A highly customizable plugin that displays the most popular posts on your blog.
- * Version:           7.3.3
- * Requires at least: 5.7
- * Requires PHP:      7.3
+ * Description:       A highly customizable plugin that displays your most popular posts.
+ * Version:           7.3.6
+ * Requires at least: 6.2
+ * Requires PHP:      7.4
  * Author:            Hector Cabrera
  * Author URI:        https://cabrerahector.com/
  * License:           GPL-2.0+
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
     die();
 }
 
-define('WPP_VERSION', '7.3.3');
+define('WPP_VERSION', '7.3.6');
 
 $wpp_main_plugin_file = __FILE__;
 // Load plugin bootstrap

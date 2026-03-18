@@ -50,7 +50,8 @@ class SucuriScan
      */
     public static function throwException($message, $type = 'error')
     {
-        if (defined('SUCURISCAN_THROW_EXCEPTIONS')
+        if (
+            defined('SUCURISCAN_THROW_EXCEPTIONS')
             && SUCURISCAN_THROW_EXCEPTIONS === true
             && is_string($message)
         ) {
@@ -61,7 +62,7 @@ class SucuriScan
                 $message
             );
 
-            /* throw catchable errors via tests */
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             throw new Exception($message, $code);
         }
 
@@ -398,7 +399,7 @@ class SucuriScan
      */
     public static function secretKeyPattern()
     {
-	    return '/define\(\s*\'([A-Z_]+)\',(\s*)\'([^\\\\\']*)\'\s*\);/';
+        return '/define\(\s*\'([A-Z_]+)\',(\s*)\'([^\\\\\']*)\'\s*\);/';
     }
 
     /**
@@ -502,10 +503,10 @@ class SucuriScan
         $headers = self::orderedHttpHeaders();
 
         foreach ($headers as $header) {
-            if (array_key_exists($header, $_SERVER)
-                && self::isValidIP($_SERVER[$header])
-            ) {
-                $remote_addr = $_SERVER[$header];
+            $possible_addr = SucuriScanRequest::server($header);
+
+            if (self::isValidIP($possible_addr)) {
+                $remote_addr = $possible_addr;
                 $header_used = $header;
                 break;
             }
@@ -539,11 +540,7 @@ class SucuriScan
      */
     public static function getUserAgent()
     {
-        if (isset($_SERVER['HTTP_USER_AGENT'])) {
-            return self::escape($_SERVER['HTTP_USER_AGENT']);
-        }
-
-        return 'Mozilla/5.0 (KHTML, like Gecko) Safari/537.36';
+        return SucuriScanRequest::server('HTTP_USER_AGENT', 'Mozilla/5.0 (KHTML, like Gecko) Safari/537.36');
     }
 
     /**
@@ -594,7 +591,7 @@ class SucuriScan
      */
     private static function hasSucuriClientIPHeader()
     {
-        return array_key_exists('HTTP_X_SUCURI_CLIENTIP', $_SERVER);
+        return (bool) SucuriScanRequest::server('HTTP_X_SUCURI_CLIENTIP');
     }
 
     /**
@@ -715,7 +712,8 @@ class SucuriScan
             $timestamp = time();
         }
 
-        if ($length === 9
+        if (
+            $length === 9
             && substr($tz, 0, 3) === 'UTC'
             && ($tz[3] === '-' || $tz[3] === '+')
             && $tz[6] === '.'
@@ -736,7 +734,7 @@ class SucuriScan
             );
         }
 
-        return date($format, (intval($timestamp) + ($diff * 3600)));
+        return gmdate($format, (intval($timestamp) + ($diff * 3600)));
     }
 
     /**
@@ -887,7 +885,9 @@ class SucuriScan
      */
     public static function isNginxServer()
     {
-        return (bool) (stripos(@$_SERVER['SERVER_SOFTWARE'], 'nginx') !== false);
+        $server_software = SucuriScanRequest::server('SERVER_SOFTWARE');
+
+        return (bool) (stripos($server_software, 'nginx') !== false);
     }
 
     /**
@@ -897,7 +897,9 @@ class SucuriScan
      */
     public static function isIISServer()
     {
-        return (bool) (stripos(@$_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false);
+        $server_software = SucuriScanRequest::server('SERVER_SOFTWARE');
+
+        return (bool) (stripos($server_software, 'Microsoft-IIS') !== false);
     }
 
     /**
@@ -911,7 +913,8 @@ class SucuriScan
         return substr(md5_file(SUCURISCAN_PLUGIN_PATH . '/' . $file), 0, 7);
     }
 
-    public static function issetScanApiUrl() {
+    public static function issetScanApiUrl()
+    {
         return defined('SUCURISCAN_API_URL') && !empty(SUCURISCAN_API_URL);
     }
 }

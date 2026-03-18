@@ -8,7 +8,7 @@
  * Author: Sucuri Inc.
  * Text Domain: sucuri-scanner
  * Domain Path: /lang
- * Version: 2.5
+ * Version: 2.7
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -54,8 +54,8 @@ $sucuriscan_dependencies = array(
 );
 
 /* terminate execution if dependencies are not met */
-foreach ($sucuriscan_dependencies as $dependency) {
-    if (!function_exists($dependency)) {
+foreach ($sucuriscan_dependencies as $sucuriscan_dependency) {
+    if (!function_exists($sucuriscan_dependency)) {
         /* Report invalid access if possible. */
         header('HTTP/1.1 403 Forbidden');
         exit(0);
@@ -87,7 +87,7 @@ define('SUCURISCAN', 'sucuriscan');
 /**
  * Current version of the plugin's code.
  */
-define('SUCURISCAN_VERSION', '2.5');
+define('SUCURISCAN_VERSION', '2.7');
 
 /**
  * Defines the human readable name of the plugin.
@@ -207,6 +207,7 @@ require_once 'src/cache.lib.php';
 require_once 'src/option.lib.php';
 require_once 'src/cron.lib.php';
 require_once 'src/event.lib.php';
+require_once 'src/permissions.lib.php';
 require_once 'src/hook.lib.php';
 require_once 'src/api.lib.php';
 require_once 'src/mail.lib.php';

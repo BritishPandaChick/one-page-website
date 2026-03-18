@@ -88,7 +88,8 @@ class SucuriScanTemplate extends SucuriScanRequest
         if (!empty($matches[1])) {
             foreach ($matches[1] as $index => $string) {
                 $search = $matches[0][$index];
-                $replace = ('en_US' !== $locale) ? translate($string, 'sucuri-scanner') : $string;
+                /* phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText */
+                $replace = ('en_US' !== $locale) ? __($string, 'sucuri-scanner') : $string;
                 $content = str_replace($search, $replace, $content);
             }
         }
@@ -117,14 +118,14 @@ class SucuriScanTemplate extends SucuriScanRequest
         $params['WordPressVersion'] = self::siteVersion();
         $params['PluginVersion'] = SUCURISCAN_VERSION;
         $params['CleanDomain'] = self::getDomain();
-        $params['Year'] = date('Y');
+        $params['Year'] = gmdate('Y');
         $params['FreemiumVisibility'] = SucuriScanInterface::isPremium() ? 'sucuriscan-hidden' : '';
 
         if (!array_key_exists('PageStyleClass', $params)) {
             $params['PageStyleClass'] = 'base';
         }
 
-        if ($target === 'base' && current_user_can('manage_options')) {
+        if ($target === 'base' && SucuriScanPermissions::canManagePlugin()) {
             $_page = self::get('page', '_page');
             $isDashboard = ($_page == 'sucuriscan' || empty($_page));
             $hasWafKey = (bool) SucuriScanFirewall::getKey();

@@ -3,8 +3,8 @@ Contributors: wordpress@sucuri.net
 Donate Link: https://sucuri.net/
 Tags: malware, security, firewall, scan, spam, virus, sucuri, protection, blocklist, detection, hardening, file integrity
 Requires at least: 3.6
-Tested up to: 6.8
-Stable tag: 2.5
+Tested up to: 6.9
+Stable tag: 2.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -259,6 +259,14 @@ This version removes the API communication service dependency on https://wordpre
 This version adds an option to refresh the malware scan results on demand, as well as several small bug fixes and improvements.
 
 == Changelog ==
+= 2.7 =
+* Fixes a lot of readiness warning/errors from PCP.
+* Updates how the plugin stores WAF API key.
+
+= 2.6 =
+* Create new permissions library.
+* Fix error causing deletion of WAF API key on clearing cache.
+
 = 2.5 =
 * Add support for two-factor authentication.
 

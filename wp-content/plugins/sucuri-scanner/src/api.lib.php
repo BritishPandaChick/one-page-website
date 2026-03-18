@@ -186,7 +186,7 @@ class SucuriScanAPI extends SucuriScanOption
         if (!empty($api_key)) {
             SucuriScanEvent::notifyEvent(
                 'plugin_change',
-                sprintf(__('API key was successfully set: %s', 'sucuri-scanner'), $api_key)
+                __('API key was successfully set.', 'sucuri-scanner')
             );
         }
 
@@ -301,7 +301,7 @@ class SucuriScanAPI extends SucuriScanOption
         if (stripos($raw, 'wrong api key') !== false) {
             $key = SucuriScanOption::getOption(':cloudproxy_apikey');
             $key = SucuriScan::escape($key);
-            $msg .= sprintf('; invalid firewall API key: %s', $key);
+            $msg .= '; invalid firewall API key.';
 
             SucuriScanOption::setRevProxy('disable', true);
             SucuriScanOption::setAddrHeader('REMOTE_ADDR', true);
@@ -387,6 +387,7 @@ class SucuriScanAPI extends SucuriScanOption
 
         SucuriScanEvent::notifyEvent(
             'plugin_change',
+            /* translators: %s: domain name */
             sprintf(__('API key recovery for domain: %s', 'sucuri-scanner'), $domain)
         );
 
@@ -939,7 +940,8 @@ class SucuriScanAPI extends SucuriScanOption
             $name = substr($data['message'], $offset + 6);
 
             $data['message'] = sprintf(
-                __('WP Engine PHP Compatibility Checker: %s (created post #%d as cache)', 'sucuri-scanner'),
+                /* translators: %1$s: plugin or theme name, %2$d: unique post or page identifier */
+                __('WP Engine PHP Compatibility Checker: %1$s (created post #%2$d as cache)', 'sucuri-scanner'),
                 $name, /* plugin or theme name */
                 $id /* unique post or page identifier */
             );
@@ -1321,6 +1323,10 @@ class SucuriScanAPI extends SucuriScanOption
 			),
 			'timeout' => 30
 		);
+
+		if (SucuriScan::isBehindFirewall()) {
+			$args['headers']['X-Sucuri-WAF'] = '1';
+		}
 
 		$response = wp_remote_get($url, $args);
 

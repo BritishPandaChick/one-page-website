@@ -32,7 +32,7 @@ function sucuriscan_dismiss_waf_prompt()
         return; // Not our action.
     }
 
-    if (!current_user_can('manage_options')) {
+    if (!SucuriScanPermissions::canManagePlugin()) {
         wp_send_json(array('ok' => false, 'error' => 'Non-admin user'), 200);
     }
 
@@ -120,7 +120,7 @@ function sucuriscan_theme_toggle()
         return; // Not our action.
     }
 
-    if (!current_user_can('manage_options')) {
+    if (!SucuriScanPermissions::canManagePlugin()) {
         wp_send_json(array('ok' => false, 'error' => 'Non-admin user'), 200);
     }
 
@@ -158,6 +158,7 @@ function sucuriscan_page()
     $params = array();
 
     SucuriScanInterface::startupChecks();
+    SucuriScanOption::renderWafKeyDecryptNotice();
 
     /* load data for the Integrity section */
     $params['Integrity'] = SucuriScanIntegrity::pageIntegrity();
@@ -195,6 +196,7 @@ function sucuriscan_page()
         $params['SiteCheck.Refresh'] = 'true';
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('dashboard', $params);
 }
 
@@ -206,6 +208,7 @@ function sucuriscan_page()
 function sucuriscan_firewall_page()
 {
     SucuriScanInterface::startupChecks();
+    SucuriScanOption::renderWafKeyDecryptNotice();
 
     $params = array(
         'Firewall.Settings' => SucuriScanFirewall::settingsPage(),
@@ -216,6 +219,7 @@ function sucuriscan_firewall_page()
         'Theme' => SucuriScanInterface::getPreferredTheme()
     );
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('firewall', $params);
 }
 
@@ -251,6 +255,7 @@ function sucuriscan_2fa_page()
     $params['TwoFactor.CurrentUser'] = SucuriScanTwoFactor::current_user_block();
     $params['TwoFactor.Users'] = SucuriScanTwoFactor::users_admin_section();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('2fa', $params);
 }
 
@@ -265,6 +270,7 @@ function sucuriscan_events_reporting_page()
     $params['PremiumVisibility'] = SucuriScanInterface::isPremium() ? '' : 'sucuriscan-hidden';
     $params['Theme'] = SucuriScanInterface::getPreferredTheme();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('events-reporting', $params);
 }
 
@@ -282,6 +288,7 @@ function sucuriscan_headers_management_page()
     $params['PremiumVisibility'] = SucuriScanInterface::isPremium() ? '' : 'sucuriscan-hidden';
     $params['Theme'] = SucuriScanInterface::getPreferredTheme();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('headers-management', $params);
 }
 
@@ -307,6 +314,7 @@ function sucuriscan_hardening_prevention_page()
     $params['PremiumVisibility'] = SucuriScanInterface::isPremium() ? '' : 'sucuriscan-hidden';
     $params['Theme'] = SucuriScanInterface::getPreferredTheme();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('hardening-and-prevention', $params);
 }
 
@@ -324,6 +332,7 @@ function sucuriscan_post_hack_actions_page()
     $params['PremiumVisibility'] = SucuriScanInterface::isPremium() ? '' : 'sucuriscan-hidden';
     $params['Theme'] = SucuriScanInterface::getPreferredTheme();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('post-hack', $params);
 }
 
@@ -361,6 +370,7 @@ function sucuriscan_lastlogins_page()
         'Theme' => SucuriScanInterface::getPreferredTheme()
     );
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('lastlogins', $params);
 }
 
@@ -415,6 +425,7 @@ function sucuriscan_settings_page()
     $params['PremiumVisibility'] = SucuriScanInterface::isPremium() ? '' : 'sucuriscan-hidden';
     $params['Theme'] = SucuriScanInterface::getPreferredTheme();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo SucuriScanTemplate::getTemplate('settings', $params);
 }
 
@@ -456,4 +467,3 @@ function sucuriscan_ajax()
 
     wp_send_json(array('ok' => false, 'error' => 'invalid ajax action'), 200);
 }
-
